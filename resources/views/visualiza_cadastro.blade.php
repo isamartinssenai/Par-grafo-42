@@ -288,6 +288,7 @@
     </style>
 </head>
 <body>
+    
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <input type="text" id="id_livro" hidden value="{{ $livro->id }}">
     <div class="form-card">
@@ -297,7 +298,7 @@
             </h1>
         </div>
         <h2 class="form-subtitle">
-            ― Cadastre seu livro favorito já!
+            ― Visualize e altere seu livro favorito já!
         </h2>
         
         <form id="livroForm">

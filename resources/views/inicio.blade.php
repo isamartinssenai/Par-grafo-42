@@ -288,6 +288,7 @@
     </style>
 </head>
 <body>
+    
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <div class="form-card">
         <div style="display: flex; align-items: baseline; flex-wrap: wrap; justify-content: space-between;">

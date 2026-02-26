@@ -297,7 +297,7 @@
             </h1>
         </div>
         <h2 class="form-subtitle">
-            ― Cadastre seu livro favorito já!
+            ― Delete seu livro :(
         </h2>
         
         <form id="livroForm">

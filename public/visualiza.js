@@ -19,15 +19,7 @@ $(document).ready(function(){
                genero: $("#genero").val()
 
 
-            },
-            success: function (res) {
-                console.log( res);
-                alert("Funcionei");
-                window.location.href
-              
-
-              
-            },
+            }, 
             error: function (xhr) {
 
                 console.log("Erro ao consultar status Pix:", xhr.responseText);

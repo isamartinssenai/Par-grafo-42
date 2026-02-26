@@ -16,6 +16,10 @@ Route::get('/home', function () {
     return view('home');
 });
 
+Route::get('/estante', function () {
+    return view('estante');
+});
+
 Route::get('/visualiza_livro/{id_livro}',[LivroController::class,'visualiza_livro']);
 Route::get('/alterar_livro/{id_livro}',[LivroController::class,'alterar_livro']);
 Route::get('/deleta_livro/{id_livro}',[LivroController::class,'deleta_livro']);
