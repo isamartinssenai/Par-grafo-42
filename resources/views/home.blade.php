@@ -294,11 +294,12 @@
       <div class="logo-text"><span></span></div>
     </div>
     <div class="nav-links">
-      <a href="{{ url('/home') }}" class="nav-item"><i class="fas fa-layer-group"></i>Início</a>
+      <a href="{{ url('/home') }}" class="nav-item"><i class="fas fa-home"></i>Início</a>
       <a href="{{ url('/estante') }}" class="nav-item"><i class="fas fa-layer-group"></i>Estante</a>
-      <a href="{{ url('/inicio') }}" class="nav-item"><i class="fas fa-layer-group"></i>Cadastre seu livro</a>
-      <a href="{{ url('/visualiza_livro') }}" class="nav-item"><i class="fas fa-layer-group"></i>Altere seu livro</a>
-      <a href="{{ url('/deleta_livro') }}" class="nav-item"><i class="fas fa-layer-group"></i>Delete seu livro</a>
+      <a href="{{ url('/inicio') }}" class="nav-item"><i class="fas fa-book-medical"></i>Cadastre seu livro</a>
+      <a href="{{ url('/login') }}" class="nav-item"><i class="fas fa-clipboard-list"></i>Login</a>
+      <a href="{{ url('/cadastro') }}" class="nav-item"><i class="fas fa-user-plus"></i>Cadastro</a>
+      <a href="{{ url('/perfil') }}" class="nav-item active"><i class="	fas fa-user-circle"></i>Perfil</a>
     </div>
   </nav>
 

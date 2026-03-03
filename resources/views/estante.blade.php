@@ -286,11 +286,12 @@
       <div class="logo-text"><span></span></div>
     </div>
     <div class="nav-links">
-      <a href="{{ url('/home') }}" class="nav-item"><i class="fas fa-layer-group"></i>Início</a>
+      <a href="{{ url('/home') }}" class="nav-item"><i class="fas fa-home"></i>Início</a>
       <a href="{{ url('/estante') }}" class="nav-item"><i class="fas fa-layer-group"></i>Estante</a>
-      <a href="{{ url('/inicio') }}" class="nav-item"><i class="fas fa-layer-group"></i>Cadastre seu livro</a>
-      <a href="{{ url('/visualiza_livro') }}" class="nav-item"><i class="fas fa-layer-group"></i>Altere seu livro</a>
-      <a href="{{ url('/deleta_livro') }}" class="nav-item"><i class="fas fa-layer-group"></i>Delete seu livro</a>
+      <a href="{{ url('/inicio') }}" class="nav-item"><i class="fas fa-book-medical"></i>Cadastre seu livro</a>
+      <a href="{{ url('/login') }}" class="nav-item"><i class="fas fa-clipboard-list"></i>Login</a>
+      <a href="{{ url('/cadastro') }}" class="nav-item"><i class="fas fa-user-plus"></i>Cadastro</a>
+      <a href="{{ url('/perfil') }}" class="nav-item active"><i class="	fas fa-user-circle"></i>Perfil</a>
     </div>
   </nav>
 
@@ -409,7 +410,38 @@
           </div>
         </div>
 
-        <!-- Livro 10 -->
+<!-- Livro 10 -->
         <div class="livro-card">
           <div class="livro-capa">
-            <img src=
+            <img src="senhor-aneis-.webp" style="height: 210px; width: auto;">
+          </div>
+          <div class="livro-info">
+            <div class="livro-titulo">O Senhor dos Anéis</div>
+            <div class="livro-autor">J.R.R. Tolkien</div>
+            <div class="livro-ano">1954</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="ver-mais-btn">
+        <button onclick="alert('Não temos mais livro, AINDA! :<')">
+          <i class="fas fa-books"></i> Ver mais livros 
+          <i class="fas fa-arrow-right"></i>
+        </button>
+      </div>
+    </section>
+  </main>
+
+  <!-- FOOTER (igual, mas opcional - pode remover se quiser) -->
+  <footer class="footer">
+    <i class="fas fa-store-alt"></i> Parágrafo 42
+    <i class="fas fa-book"></i> 
+    <span></span>
+    <div style="margin-top: 0.8rem; font-size: 0.9rem;">
+      <a href="#"><i class="fab fa-instagram"></i></a> · 
+      <a href="#"><i class="fab fa-facebook"></i></a> · 
+      <a href="#"><i class="fas fa-envelope"></i></a>
+    </div>
+  </footer>
+</body>
+</html>

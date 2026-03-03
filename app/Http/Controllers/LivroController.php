@@ -19,7 +19,6 @@ class LivroController extends Controller
             'paginas' => 'required',
             'preco' => 'required',
             'genero' => 'required',
-
         ]);
 
         try {
