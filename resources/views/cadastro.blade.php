@@ -8,6 +8,9 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.min.js"></script>
   <script src="salva_cadastro.js" ></script>
 
   <style>
@@ -457,7 +460,7 @@
           <label><i class="fas fa-calendar-alt"></i> Data de nascimento</label>
           <div class="input-wrapper">
             <i class="fas fa-calendar-alt input-icon"></i>
-            <input id="nascimento" name="nascimento" type="date" required>
+            <input id="nascimento" name="nascimento" type="date">
           </div>
         </div>
 
@@ -477,12 +480,10 @@
           </div>
         </div>
 
-        <!-- Botão de cadastro -->
-        <button type="submit" class="register-btn">
+        <button type="submit" class="register-btn" id="meuid">
           <i class="fas fa-user-plus"></i> Criar conta
         </button>
 
-        <!-- Seção de Login -->
         <div class="login-section">
           <p>Já possui uma conta?</p>
           <a href="#" class="login-link" onclick="alert('Redirecionar para login (demo)')">
@@ -490,7 +491,6 @@
           </a>
         </div>
 
-        <!-- Decoração com livrinhos -->
         <div class="book-decoration">
           <i class="fas fa-book"></i>
           <i class="fas fa-book-open"></i>
@@ -500,7 +500,6 @@
     </div>
   </div>
 
-  <!-- FOOTER -->
   <footer class="footer">
     <i class="fas fa-store-alt"></i> Parágrafo 42 · 
     <i class="fas fa-book"></i> #42 · 
@@ -512,7 +511,6 @@
     </div>
   </footer>
 
-  <!-- Script para mostrar/ocultar senha -->
   <script>
     function togglePassword() {
       const passwordInput = document.getElementById('password');

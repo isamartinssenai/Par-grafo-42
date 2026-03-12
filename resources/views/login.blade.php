@@ -8,7 +8,10 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-  
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.min.js"></script>
+  <script src="../login.js" ></script>
+
   <style>
     * {
       margin: 0;
@@ -427,14 +430,14 @@
       <div class="logo-text"><span></span></div>
     </div>
     <div class="nav-links">
-      <a href="{{ url('/home') }}" class="nav-item"><i class="fas fa-home"></i>Início</a>
+      
+    </div>
+  </nav><a href="{{ url('/home') }}" class="nav-item"><i class="fas fa-home"></i>Início</a>
       <a href="{{ url('/estante') }}" class="nav-item"><i class="fas fa-layer-group"></i>Estante</a>
       <a href="{{ url('/inicio') }}" class="nav-item"><i class="fas fa-book-medical"></i>Cadastre seu livro</a>
       <a href="{{ url('/login') }}" class="nav-item"><i class="fas fa-clipboard-list"></i>Login</a>
       <a href="{{ url('/cadastro') }}" class="nav-item"><i class="fas fa-user-plus"></i>Cadastro</a>
       <a href="{{ url('/perfil') }}" class="nav-item active"><i class="	fas fa-user-circle"></i>Perfil</a>
-    </div>
-  </nav>
 
 
   <!-- CONTEÚDO PRINCIPAL - LOGIN -->
@@ -448,13 +451,12 @@
       
       </div>
 
-      <form class="login-form" onsubmit="event.preventDefault(); alert('🔓 Login realizado com sucesso! (demo)');">
-        <!-- Campo de E-mail / Usuário -->
+     
         <div class="input-group">
           <label><i class="fas fa-envelope"></i> E-mail ou usuário</label>
           <div class="input-wrapper">
             <i class="fas fa-user input-icon"></i>
-            <input type="text" placeholder="seu@email.com" value="" required>
+            <input id="email" name="email" type="text" placeholder="seu@email.com" value="" required>
           </div>
         </div>
 
@@ -463,7 +465,7 @@
           <label><i class="fas fa-lock"></i> Senha</label>
           <div class="input-wrapper">
             <i class="fas fa-key input-icon"></i>
-            <input type="password" id="password" placeholder="••••••••" value="" required>
+            <input  id="senha" name="senha" type="password" placeholder="••••••••" value="" required>
             <button type="button" class="toggle-password" onclick="togglePassword()">
               <i class="fas fa-eye" id="toggleIcon"></i>
             </button>
@@ -473,17 +475,18 @@
       
 
         <!-- Botão de Login -->
-        <button type="submit" class="login-btn">
+        <button type="button" class="login-btn" id="meuid">
           <i class="fas fa-sign-in-alt"></i> Entrar na estante
         </button>
 
         <!-- Seção de Cadastro -->
         <div class="register-section">
           <p>Ainda não tem uma estante?</p>
-          <a href="#" class="register-link" onclick="alert('Redirecionar para cadastro (demo)')">
+          <a href="{{ url('/cadastro') }}" class="register-link">
             <i class="fas fa-user-plus"></i> Criar conta gratuita
           </a>
-        </div>
+        </div >
+        
 
         <!-- Decoração com livrinhos -->
         <div class="book-decoration">
@@ -491,7 +494,7 @@
           <i class="fas fa-book-open"></i>
           <i class="fas fa-book"></i>
         </div>
-      </form>
+      
     </div>
   </div>
 

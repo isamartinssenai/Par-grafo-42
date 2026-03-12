@@ -3,6 +3,9 @@ $(document).ready(function(){
 
     $("#meuid").click(function(){
 
+        let token = $.cookie('token');
+        alert(token);
+
         
         $.ajax({
             url: "http://127.0.0.1:8000/api/salva_livro",
@@ -16,8 +19,17 @@ $(document).ready(function(){
                 isbn: $("#isbn").val(),
                paginas : $("#paginas").val(),
                preco:$("#preco").val(),
-               genero: $("#genero").val()
+               genero: $("#genero").val(),
+               token:token
 
+
+            },success: function (res){
+                console.log(res);
+                if(res['erro'] == 'n'){
+                    alert("Livro Alterado");
+                }else{
+                    alert("Erro ao Alterar");
+                }
 
             },
             error: function (xhr) {

@@ -1,29 +1,33 @@
 $(document).ready(function(){
-let token = $.cookie('token');
 
-    $("#meuid").click(function(){
+       
+       $("#meuid").click(function(){
 
+        let token = $.cookie('token');
+        
+        alert(token);
         
         $.ajax({
-            url: "http://127.0.0.1:8000/api/cadastro_usuario",
-            method: "POST",
+            url: "http://127.0.0.1:8000/api/altera_autorr",
+            method: "PUT",
             data: { 
-                
+                id_autorr:$("#id_autorr").val(),
                 nome: $("#nome").val(),
-                email: $("#email").val(),
-                senha: $("#senha").val(),
+                cpf: $("#cpf").val(),
                 telefone: $("#telefone").val(),
                 nascimento: $("#nascimento").val(),
                 genero: $("#genero").val(),
                 token:token
 
-            },success: function (res){
+
+            }, success: function (res){
                 console.log(res);
                 if(res['erro'] == 'n'){
-                    alert("Usuario cadastrado!");
+                    alert("Perfil Alterado");
                 }else{
                     alert("Erro ao Alterar");
                 }
+
             },
             error: function (xhr) {
 

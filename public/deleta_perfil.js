@@ -5,21 +5,21 @@ let token = $.cookie('token');
 
         
         $.ajax({
-            url: "http://127.0.0.1:8000/api/deleta_livro",
+            url: "http://127.0.0.1:8000/api/deleta_cadastro",
             method: "DELETE",
             data: { 
-                id_livro :$("#id_livro").val(),
+                id_cadastro:$("#id_cadastro").val(),
                 token:token
                
             },
             success: function (res) {
                 console.log(res);
                 setTimeout(function() {
-                    window.location.href = '/inicio';
+                    window.location.href = '/cadastro';
                     if(res['erro'] == 'n'){
-                    alert("Livro Alterado");
+                    alert("Perfil deletado");
                 }else{
-                    alert("Erro ao Alterar");
+                    alert("Erro ao deletar");
                 }
                 }, 2500);              
             },

@@ -1,17 +1,16 @@
 $(document).ready(function(){
-let token = $.cookie('token');
 
     $("#meuid").click(function(){
 
-        
+        let token = $.cookie('token');
+
         $.ajax({
-            url: "http://127.0.0.1:8000/api/cadastro_usuario",
+            url: "http://127.0.0.1:8000/api/cadastra_autor",
             method: "POST",
             data: { 
                 
                 nome: $("#nome").val(),
-                email: $("#email").val(),
-                senha: $("#senha").val(),
+                cpf: $("#cpf").val(),
                 telefone: $("#telefone").val(),
                 nascimento: $("#nascimento").val(),
                 genero: $("#genero").val(),
@@ -20,7 +19,7 @@ let token = $.cookie('token');
             },success: function (res){
                 console.log(res);
                 if(res['erro'] == 'n'){
-                    alert("Usuario cadastrado!");
+                    alert("Autor cadastrado!");
                 }else{
                     alert("Erro ao Alterar");
                 }

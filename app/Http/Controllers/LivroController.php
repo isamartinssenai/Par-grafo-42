@@ -136,6 +136,7 @@ class LivroController extends Controller
             'id_livro' => 'required',
 
         ]);
+        
 
         
         $livro = LivroModel::find($request->id_livro);

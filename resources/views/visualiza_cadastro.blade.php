@@ -8,6 +8,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=Montserrat:wght@300;400;500&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.min.js"></script>
     <script src="../visualiza.js" ></script>
     <style>
         * {
@@ -326,7 +327,7 @@
                         Ano de Publicação 
                         <span class="required-star" title="Campo obrigatório">*</span>
                     </label>
-                    <input type="number" id="ano_publicacao" value="{{ $livro->ano_publicacao }}" name="ano_publicacao" placeholder="ex: 2021" min="1000" max="2100" required>
+                    <input type="number" id="ano_publicacao" value={{ $livro->ano_publicacao }} name="ano_publicacao" placeholder="ex: 2021" min="1000" max="2100" required>
                     <div class="error-message" id="error-ano">Por favor, insira o ano de publicação</div>
                 </div>
                 
