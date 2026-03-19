@@ -4,14 +4,13 @@ $(document).ready(function(){
        $("#meuid").click(function(){
 
         let token = $.cookie('token');
-        
         alert(token);
         
         $.ajax({
-            url: "http://127.0.0.1:8000/api/altera_autorr",
+            url: "http://127.0.0.1:8000/api/altera_autor",
             method: "PUT",
             data: { 
-                id_autorr:$("#id_autorr").val(),
+                id_autor:$("#id_autor").val(),
                 nome: $("#nome").val(),
                 cpf: $("#cpf").val(),
                 telefone: $("#telefone").val(),

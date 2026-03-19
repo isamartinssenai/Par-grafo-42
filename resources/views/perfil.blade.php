@@ -719,27 +719,27 @@
           <div class="info-grid">
             <div class="info-item">
               <span class="info-label"><i class="fas fa-user"></i> Nome completo</span>
-              <input type="text" id="nome" name="nome" class="info-value" value="{{ $cadastro->nome ?? 'oi@email.com' }}" placeholder="Seu nome completo" required>
+              <input type="text" id="nome" name="nome" class="info-value" value="{{ $cadastro->nome}}" placeholder="Seu nome completo" required>
             </div>
             <div class="info-item">
               <span class="info-label"><i class="fas fa-envelope"></i> E-mail</span>
-              <input type="email" id="email" name="email" class="info-value" value="{{ $cadastro->email ?? 'oi@gmail.com' }}" placeholder="seu@email.com" required>
+              <input type="email" id="email" name="email" class="info-value" value="{{ $cadastro->email}}" placeholder="seu@email.com" required>
             </div>
             <div class="info-item">
               <span class="info-label"><i class="fas fa-calendar-alt"></i> Data de nascimento</span>
-              <input type="text" id="nascimento" name="nascimento" class="info-value" value="{{ $cadastro->nascimento ?? '2011-12-25' }}" placeholder="dd/mm/aaaa" required>
+              <input type="text" id="nascimento" name="nascimento" class="info-value" value="{{ $cadastro->nascimento}}" placeholder="dd/mm/aaaa" required>
             </div>
             <div class="info-item">
               <span class="info-label"><i class="fas fa-phone"></i> Telefone</span>
-              <input type="tel" id="telefone" name="telefone" class="info-value" value="{{ $cadastro->telefone ?? '15999637520' }}" placeholder="(00) 00000-0000" required>
+              <input type="tel" id="telefone" name="telefone" class="info-value" value="{{ $cadastro->telefone}}" placeholder="(00) 00000-0000" required>
             </div>
             <div class="info-item">
               <span class="info-label"><i class="fas fa-venus-mars"></i> Gênero</span>
-              <input type="text" id="genero" name="genero" class="info-value" value="{{ $cadastro->genero ?? 'nao-binario' }}" placeholder="Gênero" required>
+              <input type="text" id="genero" name="genero" class="info-value" value="{{ $cadastro->genero}}" placeholder="Gênero" required>
             </div>
             <div class="info-item">
               <span class="info-label"><i class="fas fa-eye"></i> Senha</span>
-              <input type="password" id="senha" name="senha" class="info-value" value="********" placeholder="********" required>
+              <input type="password" id="senha" name="senha" class="info-value" value="{{ $cadastro->senha}}" placeholder="********" required>
             </div>
           </div>
         </div>

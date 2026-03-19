@@ -18,18 +18,18 @@ class AutorController extends Controller
 
         try {
             $usuario = $request->usuario;
-            $autorr = new AutorModel();
-            $autorr->nome = $request->nome;
-            $autorr->telefone = $request->telefone;
-            $autorr->cpf = $request->cpf;
-            $autorr->nascimento = $request->nascimento;
-            $autorr->genero = $request->genero;
-            $autorr->user_id = $usuario->id;
-            $autorr->save();
+            $autor = new AutorModel();
+            $autor->nome = $request->nome;
+            $autor->telefone = $request->telefone;
+            $autor->cpf = $request->cpf;
+            $autor->nascimento = $request->nascimento;
+            $autor->genero = $request->genero;
+            $autor->user_id = $usuario->id;
+            $autor->save();
 
             $data =[
                 'erro' => 'n',
-                'data' => $autorxr
+                'data' => $autor
             ];
 
             return response()->json($data,200);
@@ -44,7 +44,7 @@ class AutorController extends Controller
     }
 
 
-    public function altera_autorr(Request $request)
+    public function altera_autor(Request $request)
     {
         $request->validate([
             'nome' => 'required',
@@ -55,7 +55,7 @@ class AutorController extends Controller
         ]);
 
         try {
-            $autor = AutorModel::find($request->id_autorr);
+            $autor = AutorModel::find($request->id_autor);
             $autor->nome = $request->nome;
             $autor->telefone = $request->telefone;
             $autor->cpf = $request->cpf;
@@ -65,7 +65,7 @@ class AutorController extends Controller
 
             $data = [
                 'erro' => 'n',
-                'Autor' => $autorr,
+                'autor' => $autor,
             ];
 
             return response()->json($data, 200);
@@ -76,65 +76,65 @@ class AutorController extends Controller
 
     }
 
-        public function exibe_autorr($id)
+        public function exibe_autor($id)
     {
 
-        $autorr = AutorModel::find($id);
+        $autor = AutorModel::find($id);
 
         $data = [
             'erro' => 'n',
-            'autorr' => $autorr,
+            'autor' => $autor,
         ];
 
         return response()->json($data, 200);
     }
 
-    public function todos_autorr(Request $request)
+    public function todos_autor(Request $request)
     {
 
-        $autorr = AutorModel::get()->all();
+        $autor = AutorModel::get()->all();
 
         $data = [
             'erro' => 'n',
-            'autorr' => $autorr,
+            'autor' => $autor,
         ];
 
         return response()->json($data, 200);
     }
 
-    public function visualiza_autorr($id_autorr)
+    public function visualiza_autor($id_autor)
     {
 
-        $autorr= AutorModel::find($id_autorr);
+        $autor= AutorModel::find($id_autor);
 
-        return view('visualiza_autor')->with('autorr', $autorr);
+        return view('visualiza_autor')->with('autor', $autor);
 
     }
 
-    public function deleta_autorr($id_autorr)
+    public function deleta_autor($id_autor)
     {
-        $cadastro = Usuario::find($id_autorr);
+        $cadastro = Usuario::find($id_autor);
 
-        return view('deleta_autor')->with('autorr', $autorr);
+        return view('deleta_autor')->with('autor', $autor);
 
     }
 
-    public function apagar_autorr(Request $request)
+    public function apagar_autrr(Request $request)
     {
         $request->validate([
 
-            'id_autorr' => 'required',
+            'id_autor' => 'required',
 
         ]);
 
         
-        $autorr = AutorModel::find($request->id_autorr);
+        $autor = AutorModel::find($request->id_autor);
 
-        $autorr->delete();
+        $autor->delete();
 
         $data = [
             'erro' => 'n',
-            'autorr' => $autorr,
+            'autor' => $autor,
         ];
 
         return response()->json($data, 200);

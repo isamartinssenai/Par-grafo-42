@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Parágrafo 42 · cadastrar autor</title>
+  <title>Parágrafo 42 · alterar autor</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=Playfair+Display:wght@500;600;700&display=swap" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=Montserrat:wght@300;400;500&display=swap" rel="stylesheet">
@@ -374,7 +374,7 @@
   <!-- CONTEÚDO PRINCIPAL - CADASTRO DE AUTOR -->
   <div class="cadastro-container">
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <input type="hidden" id="id_autorr" value="{{ $autorr->id ?? '' }}">
+    <input type="hidden" id="id_autor" value={{ $autor->id }}>
     
     <div class="cadastro-card">
       
@@ -403,7 +403,7 @@
             <input 
               id="nome" 
               name="nome" 
-              value="{{ $autorr->nome ?? '' }}" 
+              value={{ $autor->nome}} 
               type="text" 
               class="form-control" 
               placeholder="Digite o nome completo" 
@@ -417,7 +417,7 @@
             <input 
               id="telefone" 
               name="telefone" 
-              value="{{ $autorr->telefone ?? '' }}" 
+              value={{ $autor->telefone}}
               type="text" 
               class="form-control" 
               placeholder="(00) 00000-0000" 
@@ -431,7 +431,7 @@
             <input 
               id="cpf" 
               name="cpf" 
-              value="{{ $autorr->cpf ?? '' }}" 
+              value={{ $autor->cpf}}
               type="text" 
               class="form-control" 
               placeholder="000.000.000-00" 
@@ -445,7 +445,7 @@
             <input 
               id="nascimento" 
               name="nascimento" 
-              value="{{ $autorr->nascimento ?? '' }}" 
+              value={{ $autor->nascimento}}
               type="date" 
               class="form-control" 
               required
@@ -456,21 +456,21 @@
           <div class="form-group">
             <span class="form-label"><i class="fas fa-book"></i> Gênero literário *</span>
             <select id="genero" name="genero" class="form-control" required>
-              <option value="romance" {{ isset($autorr->genero) $autorr->genero == 'romance' ? 'selected' : '' }}>Romance</option>
-              <option value="ficcao" {{ isset($autorr->genero) $autorr->genero == 'ficcao' ? 'selected' : '' }}>Ficção Científica</option>
-              <option value="fantasia" {{ isset($autorr->genero) $autorr->genero == 'fantasia' ? 'selected' : '' }}>Fantasia</option>
-              <option value="terror" {{ isset($autorr->genero) $autorr->genero == 'terror' ? 'selected' : '' }}>Terror</option>
-              <option value="suspense" {{ isset($autorr->genero) $autorr->genero == 'suspense' ? 'selected' : '' }}>Suspense</option>
-              <option value="poesia" {{ isset($autorr->genero) $autorr->genero == 'poesia' ? 'selected' : '' }}>Poesia</option>
-              <option value="biografia" {{ isset($autorr->genero) $autorr->genero == 'biografia' ? 'selected' : '' }}>Biografia</option>
-              <option value="infantil" {{ isset($autorr->genero) $autorr->genero == 'infantil' ? 'selected' : '' }}>Infantil</option>
+              <option value="romance" {{$autor->genero == 'romance' ? 'selected' : '' }}>Romance</option>
+              <option value="ficcao" {{$autor->genero == 'ficcao' ? 'selected' : '' }}>Ficção Científica</option>
+              <option value="fantasia" {{$autor->genero == 'fantasia' ? 'selected' : '' }}>Fantasia</option>
+              <option value="terror" {{$autor->genero == 'terror' ? 'selected' : '' }}>Terror</option>
+              <option value="suspense" {{ $autor->genero == 'suspense' ? 'selected' : '' }}>Suspense</option>
+              <option value="poesia" {{$autor->genero == 'poesia' ? 'selected' : '' }}>Poesia</option>
+              <option value="biografia" {{$autor->genero == 'biografia' ? 'selected' : '' }}>Biografia</option>
+              <option value="infantil" {{$autor->genero == 'infantil' ? 'selected' : '' }}>Infantil</option>
             </select>
           </div>
         </div>
 
         <!-- BOTÕES -->
         <div class="acoes-form">
-          <button type="button" id="btn-salvar" class="btn btn-primary" onclick="salvarAutor()">
+          <button type="button" id="meuid" class="btn btn-primary" onclick="salvarAutor()">
             <i class="fas fa-save"></i> Cadastrar Autor
           </button>
           <button type="button" class="btn btn-outline" onclick="limparFormulario()">

@@ -372,7 +372,7 @@
   </nav>
 
   <!-- CONTEÚDO PRINCIPAL - CADASTRO DE AUTOR -->
-  <div class="cadastro-container" name="csrf-token" content="{{ csrf_token() }}">
+  <div class="cadastro-container">
     <div class="cadastro-card">
       
       <!-- CABEÇALHO -->
@@ -382,7 +382,7 @@
             <i class="fas fa-feather-alt"></i>
           </div>
         </div>
-        <div class="cadastro-titulo" id="#meuid">
+        <div class="cadastro-titulo">
           <h1>
             <i class="fas fa-id-card"></i>
             Cadastrar Autor
@@ -392,7 +392,7 @@
       </div>
 
       <!-- FORMULÁRIO AGORA COMO DIV -->
-      <div id="form-autor" onsubmit="return salvarAutor(event)">
+      <div id="form-autor">
         <div class="form-grid">
           <!-- Nome Completo -->
           <div class="form-group full-width">
@@ -437,7 +437,7 @@
 
         <!-- BOTÕES -->
         <div class="acoes-form">
-          <button type="button" id="meuid" class="btn btn-primary">
+          <button type="submit" id="meuid" class="btn btn-primary">
             <i class="fas fa-save"></i> Cadastrar Autor
           </button>
         </div>

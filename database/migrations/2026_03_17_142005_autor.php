@@ -18,6 +18,7 @@ return new class extends Migration
             $table->text('telefone');
             $table->date('nascimento');
             $table->text('genero');
+            $table->bigInteger('user_id');
             $table->timestamps();
         });
     }

@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class AutorModel extends Model
 {
     
-    protected $table = 'autorr';
+    protected $table = 'autor';
 
     protected $fillable = [
         'nome',

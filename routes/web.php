@@ -47,6 +47,8 @@ Route::get('/visualiza_cadastro/{id_cadastro}',[UsuarioController::class,'visual
 Route::get('/altera_cadastro/{id_cadastro}',[UsuarioController::class,'altera_cadastro']);
 Route::get('/deleta_cadastro/{id_cadastro}',[UsuarioController::class,'deleta_cadastro']);
 
-Route::get('/visualiza_autorr/{id_autorr}',[AutorController::class,'visualiza_autorr']);
+Route::get('/visualiza_autor/{id_autor}',[AutorController::class,'visualiza_autor']);
+Route::get('/altera_autor/{id_autor}',[AutorController::class,'visualiza_autor']);
+Route::get('/deleta_autor/{id_autor}',[AutorController::class,'deleta_autor']);
 require __DIR__.'/auth.php';
 
