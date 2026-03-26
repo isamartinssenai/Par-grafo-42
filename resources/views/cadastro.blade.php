@@ -392,14 +392,15 @@
   <nav class="navbar">
     <div class="logo">
       <div class="logo-icon"><i class="fas fa-book-open"></i></div>
-      <div class="logo-text"><span></span></div>
+      <div class="logo-text">Parágrafo<span>42</span></div>
     </div>
     <div class="nav-links">
       <a href="{{ url('/home') }}" class="nav-item"><i class="fas fa-home"></i>Início</a>
       <a href="{{ url('/estante') }}" class="nav-item"><i class="fas fa-layer-group"></i>Estante</a>
       <a href="{{ url('/inicio') }}" class="nav-item"><i class="fas fa-book-medical"></i>Cadastre seu livro</a>
+      <a href="{{ url('/autor') }}" class="nav-item active"><i class="fas fa-feather"></i>Cadastrar Autor</a>
+      <a href="{{ url('/prevendas') }}" class="nav-item"><i class="fas fa-cart-shopping"></i>Pré vendas</a>
       <a href="{{ url('/login') }}" class="nav-item"><i class="fas fa-clipboard-list"></i>Login</a>
-      <a href="{{ url('/cadastro') }}" class="nav-item active"><i class="fas fa-user-plus"></i>Cadastro</a>
       <a href="{{ url('/perfil') }}" class="nav-item"><i class="fas fa-user-circle"></i>Perfil</a>
     </div>
   </nav>
@@ -486,7 +487,7 @@
 
         <div class="login-section">
           <p>Já possui uma conta?</p>
-          <a href="#" class="login-link" onclick="alert('Redirecionar para login (demo)')">
+          <a href="{{ url('/cadastro') }}" class="login-link" >
             <i class="fas fa-sign-in-alt"></i> Fazer login
           </a>
         </div>

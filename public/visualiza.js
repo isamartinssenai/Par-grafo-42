@@ -6,7 +6,7 @@ $(document).ready(function(){
         let token = $.cookie('token');
         
         $.ajax({
-            url: "http://127.0.0.1:8000/api/altera_livro",
+            url: "/api/altera_livro",
             method: "PUT",
             data: { 
                 id_livro :$("#id_livro").val(),

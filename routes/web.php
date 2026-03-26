@@ -38,6 +38,10 @@ Route::get('/autor', function () {
     return view('autor');
 });
 
+Route::get('/prevendas', function () {
+    return view('vendas');
+});
+
 
 Route::get('/visualiza_livro/{id_livro}',[LivroController::class,'visualiza_livro']);
 Route::get('/alterar_livro/{id_livro}',[LivroController::class,'visualiza_livro']);

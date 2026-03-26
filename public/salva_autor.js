@@ -5,7 +5,7 @@ $(document).ready(function(){
         let token = $.cookie('token');
 
         $.ajax({
-            url: "http://127.0.0.1:8000/api/cadastra_autor",
+            url: "/api/cadastra_autor",
             method: "POST",
             data: { 
                 

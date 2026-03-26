@@ -5,7 +5,7 @@ let token = $.cookie('token');
 
         
         $.ajax({
-            url: "http://127.0.0.1:8000/api/deleta_livro",
+            url: "/api/deleta_livro",
             method: "DELETE",
             data: { 
                 id_livro :$("#id_livro").val(),

@@ -5,7 +5,7 @@ let token = $.cookie('token');
 
         
         $.ajax({
-            url: "http://127.0.0.1:8000/api/cadastro_usuario",
+            url: "/api/cadastro_usuario",
             method: "POST",
             data: { 
                 

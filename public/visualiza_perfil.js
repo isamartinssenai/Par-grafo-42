@@ -7,7 +7,7 @@ $(document).ready(function(){
         alert(token);
         
         $.ajax({
-            url: "http://127.0.0.1:8000/api/altera_cadastro",
+            url: "/api/altera_cadastro",
             method: "PUT",
             data: { 
                 id_cadastro:$("#id_cadastro").val(),

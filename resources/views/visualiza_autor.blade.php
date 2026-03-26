@@ -9,9 +9,118 @@
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=Montserrat:wght@300;400;500&display=swap" rel="stylesheet">
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.min.js"></script>
-  <script src="visualiza_autor.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
+
 
   <style>
+.submit-btn {
+  background: linear-gradient(145deg, #1f3133, #2a4245);
+  color: #fff;
+  border: none;
+  font-weight: 600;
+  padding: 1rem 2.5rem;
+  border-radius: 50px;
+  font-size: 1.1rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  border: 2px solid #b78c5a;
+  text-decoration: none;
+  font-family: 'Cormorant Garamond', serif;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 8px 18px -6px #1f3133;
+}
+
+.submit-btn::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(183, 140, 90, 0.3), transparent);
+  transition: left 0.5s ease;
+}
+
+.submit-btn:hover {
+  background: linear-gradient(145deg, #2a4245, #1f3133);
+  transform: translateY(-3px) scale(1.02);
+  box-shadow: 0 15px 25px -8px #1f3133, 0 0 0 2px #e6c9a8;
+  border-color: #e6c9a8;
+  color: #fff;
+}
+
+.submit-btn:hover::before {
+  left: 100%;
+}
+
+.submit-btn:active {
+  transform: translateY(-1px) scale(0.99);
+  box-shadow: 0 5px 12px -4px #1f3133;
+}
+
+.submit-btn i {
+  color: #b78c5a;
+  font-size: 1.2rem;
+  transition: all 0.3s ease;
+}
+
+.submit-btn:hover i {
+  color: #e6c9a8;
+  transform: scale(1.1) rotate(-5deg);
+}
+
+.submit-btn i:first-child {
+  animation: subtlePulse 2s ease-in-out infinite;
+}
+
+/* Animação sutil para o ícone */
+@keyframes subtlePulse {
+  0%, 100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.05);
+  }
+}
+
+/* Estilo adicional para quando o botão estiver carregando (opcional) */
+.submit-btn.loading {
+  pointer-events: none;
+  opacity: 0.8;
+  padding-left: 2rem;
+  padding-right: 2rem;
+}
+
+.submit-btn.loading i {
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* Responsividade */
+@media (max-width: 768px) {
+  .submit-btn {
+    padding: 0.9rem 2rem;
+    font-size: 1rem;
+    width: 100%;
+    max-width: 300px;
+  }
+}
     * {
       margin: 0;
       padding: 0;
@@ -24,8 +133,11 @@
 
     body {
       font-family: 'Cormorant Garamond', 'Georgia', serif;
+      background-image: url('naice.png');
       background-size: cover;
       background-attachment: fixed;
+      background-position: center;
+      background-repeat: no-repeat;
       color: #1e2b2c;
       line-height: 1.5;
       min-height: 100vh;
@@ -82,6 +194,7 @@
       display: flex;
       gap: 1.2rem;
       align-items: center;
+      flex-wrap: wrap;
     }
 
     .nav-item {
@@ -338,6 +451,19 @@
       text-decoration: none;
     }
 
+    /* Responsividade para a navbar */
+    @media (max-width: 900px) {
+      .navbar {
+        flex-direction: column;
+        gap: 0.8rem;
+        padding: 1rem;
+      }
+      .nav-links {
+        justify-content: center;
+        gap: 0.8rem;
+      }
+    }
+
     @media (max-width: 768px) {
       .cadastro-header {
         flex-direction: column;
@@ -356,7 +482,7 @@
   </style>
 </head>
 <body>
-  <nav class="navbar">
+    <nav class="navbar">
     <div class="logo">
       <div class="logo-icon"><i class="fas fa-book-open"></i></div>
       <div class="logo-text">Parágrafo<span>42</span></div>
@@ -365,16 +491,18 @@
       <a href="{{ url('/home') }}" class="nav-item"><i class="fas fa-home"></i>Início</a>
       <a href="{{ url('/estante') }}" class="nav-item"><i class="fas fa-layer-group"></i>Estante</a>
       <a href="{{ url('/inicio') }}" class="nav-item"><i class="fas fa-book-medical"></i>Cadastre seu livro</a>
+      <a href="{{ url('/autor') }}" class="nav-item active"><i class="fas fa-feather"></i>Cadastrar Autor</a>
+      <a href="{{ url('/prevendas') }}" class="nav-item"><i class="fas fa-cart-shopping"></i>Pré vendas</a>
       <a href="{{ url('/login') }}" class="nav-item"><i class="fas fa-clipboard-list"></i>Login</a>
-      <a href="{{ url('/cadastro') }}" class="nav-item"><i class="fas fa-user-plus"></i>Cadastro</a>
-      <a href="{{ url('/perfil') }}" class="nav-item active"><i class="	fas fa-user-circle"></i>Perfil</a>
+      <a href="{{ url('/perfil') }}" class="nav-item"><i class="fas fa-user-circle"></i>Perfil</a>
     </div>
   </nav>
 
   <!-- CONTEÚDO PRINCIPAL - CADASTRO DE AUTOR -->
   <div class="cadastro-container">
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <input type="hidden" id="id_autor" value={{ $autor->id }}>
+  
+    <input type="hidden" id="id_autor" value="{{$autor->id}}">
     
     <div class="cadastro-card">
       
@@ -388,7 +516,7 @@
         <div class="cadastro-titulo">
           <h1>
             <i class="fas fa-id-card"></i>
-            Cadastrar Autor
+            Altera Autor
           </h1>
           <p>Preencha os dados do autor</p>
         </div>
@@ -403,11 +531,10 @@
             <input 
               id="nome" 
               name="nome" 
-              value={{ $autor->nome}} 
+              value="{{ $autor->nome}}"
               type="text" 
               class="form-control" 
               placeholder="Digite o nome completo" 
-              required
             >
           </div>
 
@@ -417,11 +544,10 @@
             <input 
               id="telefone" 
               name="telefone" 
-              value={{ $autor->telefone}}
+              value="{{ $autor->telefone}}"
               type="text" 
               class="form-control" 
               placeholder="(00) 00000-0000" 
-              required
             >
           </div>
 
@@ -431,11 +557,10 @@
             <input 
               id="cpf" 
               name="cpf" 
-              value={{ $autor->cpf}}
+              value="{{ $autor->cpf}}"
               type="text" 
               class="form-control" 
               placeholder="000.000.000-00" 
-              required
             >
           </div>
 
@@ -445,10 +570,9 @@
             <input 
               id="nascimento" 
               name="nascimento" 
-              value={{ $autor->nascimento}}
+              value="{{ $autor->nascimento}}"
               type="date" 
               class="form-control" 
-              required
             >
           </div>
 
@@ -470,12 +594,10 @@
 
         <!-- BOTÕES -->
         <div class="acoes-form">
-          <button type="button" id="meuid" class="btn btn-primary" onclick="salvarAutor()">
-            <i class="fas fa-save"></i> Cadastrar Autor
+          <button type="button" class="submit-btn" id="meuid">
+            <i class="fas fa-save"></i> Alterar Autor
           </button>
-          <button type="button" class="btn btn-outline" onclick="limparFormulario()">
-            <i class="fas fa-eraser"></i> Limpar
-          </button>
+
         </div>
       </div>
     </div>
@@ -528,19 +650,13 @@
       const telefoneInput = document.getElementById('telefone');
       const cpfInput = document.getElementById('cpf');
       
-      // Aplica máscara aos valores iniciais se necessário
+      // Aplicar máscaras nos valores iniciais
       if (telefoneInput.value) {
-        // Se o valor for apenas números, aplica a máscara
-        if (/^\d+$/.test(telefoneInput.value)) {
-          telefoneInput.value = mascaraTelefone(telefoneInput.value);
-        }
+        telefoneInput.value = mascaraTelefone(telefoneInput.value);
       }
       
       if (cpfInput.value) {
-        // Se o valor for apenas números, aplica a máscara
-        if (/^\d+$/.test(cpfInput.value)) {
-          cpfInput.value = mascaraCPF(cpfInput.value);
-        }
+        cpfInput.value = mascaraCPF(cpfInput.value);
       }
       
       // Event listeners para máscaras
@@ -553,32 +669,104 @@
       });
     });
 
-    // Função para salvar autor
-    function salvarAutor() {
-      const nome = document.getElementById('nome').value;
-      const telefone = document.getElementById('telefone').value;
-      const cpf = document.getElementById('cpf').value;
-      const nascimento = document.getElementById('nascimento').value;
-      const genero = document.getElementById('genero').value;
-      const id = document.getElementById('id_autorr').value;
+    $(document).ready(function(){
 
-      // Validação básica
-      if (!nome || !telefone || !cpf || !nascimento || !genero) {
-        alert('Por favor, preencha todos os campos obrigatórios!');
-        return false;
-      }
-    }
+       
+       $("#meuid").click(function(){
 
-    // Função para limpar formulário
-    function limparFormulario() {
-      if (confirm('Tem certeza que deseja limpar todos os campos?')) {
-        document.getElementById('nome').value = '';
-        document.getElementById('telefone').value = '';
-        document.getElementById('cpf').value = '';
-        document.getElementById('nascimento').value = '';
-        document.getElementById('genero').value = 'romance';
-      }
-    }
+        let token = $.cookie('token');
+        
+        // Mostrar loading
+        Swal.fire({
+          title: 'Processando...',
+          text: 'Alterando os dados do autor',
+          allowOutsideClick: false,
+          allowEscapeKey: false,
+          background: '#fffffffa',
+          didOpen: () => {
+            Swal.showLoading();
+          }
+        });
+        
+        $.ajax({
+            url: "/api/altera_autor",
+            method: "PUT",
+            data: { 
+                id_autor:$("#id_autor").val(),
+                nome: $("#nome").val(),
+                cpf: $("#cpf").val(),
+                telefone: $("#telefone").val(),
+                nascimento: $("#nascimento").val(),
+                genero: $("#genero").val(),
+                token:token
+            }, success: function (res){
+                console.log(res);
+                if(res['erro'] == 'n'){
+                    // Sweet Alert de sucesso
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Sucesso!',
+                        html: `
+                            <div style="text-align: center; font-family: 'Cormorant Garamond', serif;">
+                                <i class="fas fa-check-circle" style="color: #b78c5a; font-size: 3rem; margin-bottom: 1rem;"></i>
+                                <p style="font-size: 1.2rem; color: #1f3133;">Perfil do autor alterado com sucesso!</p>
+                            </div>
+                        `,
+                        background: '#fffffffa',
+                        showConfirmButton: true,
+                        confirmButtonColor: '#b78c5a',
+                        confirmButtonText: 'OK',
+                        timer: 3000,
+                        timerProgressBar: true,
+                        showClass: {
+                            popup: 'animate__animated animate__fadeInDown'
+                        },
+                        hideClass: {
+                            popup: 'animate__animated animate__fadeOutUp'
+                        }
+                    }).then(() => {
+                        window.location.href = "/autor";
+                    });
+                } else {
+                    // Sweet Alert de erro
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Oops...',
+                        html: `
+                            <div style="text-align: center; font-family: 'Cormorant Garamond', serif;">
+                                <i class="fas fa-exclamation-triangle" style="color: #b78c5a; font-size: 3rem; margin-bottom: 1rem;"></i>
+                                <p style="font-size: 1.2rem; color: #1f3133;">Erro ao alterar o perfil!</p>
+                                <p style="font-size: 1rem; color: #666;">Tente novamente mais tarde.</p>
+                            </div>
+                        `,
+                        background: '#fffffffa',
+                        confirmButtonColor: '#b78c5a',
+                        confirmButtonText: 'OK'
+                    });
+                }
+
+            },
+            error: function (xhr) {
+                console.log("Erro ao consultar status Pix:", xhr.responseText);
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Erro no servidor',
+                    html: `
+                        <div style="text-align: center; font-family: 'Cormorant Garamond', serif;">
+                            <i class="fas fa-exclamation-circle" style="color: #b78c5a; font-size: 3rem; margin-bottom: 1rem;"></i>
+                            <p style="font-size: 1.2rem; color: #1f3133;">Erro ao conectar ao servidor</p>
+                            <p style="font-size: 1rem; color: #666;">Verifique sua conexão e tente novamente.</p>
+                        </div>
+                    `,
+                    background: '#fffffffa',
+                    confirmButtonColor: '#b78c5a',
+                    confirmButtonText: 'OK'
+                });
+            }
+        });
+    });
+});
+
   </script>
 </body>
 </html>

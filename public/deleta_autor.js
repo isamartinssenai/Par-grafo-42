@@ -5,10 +5,10 @@ let token = $.cookie('token');
 
         
         $.ajax({
-            url: "/api/deleta_cadastro",
+            url: "/api/deleta_autor",
             method: "DELETE",
             data: { 
-                id_cadastro:$("#id_cadastro").val(),
+                id_autor:$("#id_autor").val(),
                 token:token
                
             },
@@ -17,7 +17,7 @@ let token = $.cookie('token');
                 setTimeout(function() {
                     window.location.href = '/home';
                     if(res['erro'] == 'n'){
-                    alert("Perfil deletado");
+                    alert("Autor deletado");
                 }else{
                     alert("Erro ao deletar");
                 }

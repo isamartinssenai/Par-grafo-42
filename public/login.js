@@ -5,7 +5,7 @@ $(document).ready(function(){
 
        
         $.ajax({
-            url: "http://127.0.0.1:8000/api/login_novo",
+            url: "/api/login_novo",
             method: "GET",
             data: { 
                 
@@ -15,13 +15,13 @@ $(document).ready(function(){
             },success: function(response){
                 console.log(response);
                 if(response['erro'] =='n'){
-                    alert("loguei");
+                    alert("Logado com sucesso!");
                     $.cookie('token',response['token'],{expire:7});
 
                     
 
                     setTimeout(function(){
-                        //window.location.href="/home"; 
+                        window.location.href="/home"; 
                     },2000);
                     
                 }else{

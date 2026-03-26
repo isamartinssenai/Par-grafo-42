@@ -10,6 +10,8 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
   <script src="../login.js" ></script>
 
   <style>
@@ -80,6 +82,7 @@
       display: flex;
       gap: 1.2rem;
       align-items: center;
+      flex-wrap: wrap;
     }
 
     .nav-item {
@@ -412,6 +415,9 @@
         gap: 0.8rem;
         padding: 1rem;
       }
+      .nav-links {
+        justify-content: center;
+      }
       .login-card {
         padding: 2rem 1.5rem;
       }
@@ -423,22 +429,22 @@
   </style>
 </head>
 <body>
-  <!-- NAVBAR IGUAL AO ORIGINAL -->
- <nav class="navbar">
+  <!-- NAVBAR CORRIGIDA COM TODOS OS ITENS DENTRO -->
+  <nav class="navbar">
     <div class="logo">
       <div class="logo-icon"><i class="fas fa-book-open"></i></div>
-      <div class="logo-text"><span></span></div>
+      <div class="logo-text">Parágrafo<span>42</span></div>
     </div>
     <div class="nav-links">
-      
-    </div>
-  </nav><a href="{{ url('/home') }}" class="nav-item"><i class="fas fa-home"></i>Início</a>
+      <a href="{{ url('/home') }}" class="nav-item"><i class="fas fa-home"></i>Início</a>
       <a href="{{ url('/estante') }}" class="nav-item"><i class="fas fa-layer-group"></i>Estante</a>
       <a href="{{ url('/inicio') }}" class="nav-item"><i class="fas fa-book-medical"></i>Cadastre seu livro</a>
+      <a href="{{ url('/autor') }}" class="nav-item active"><i class="fas fa-feather"></i>Cadastrar Autor</a>
+      <a href="{{ url('/prevendas') }}" class="nav-item"><i class="fas fa-cart-shopping"></i>Pré vendas</a>
       <a href="{{ url('/login') }}" class="nav-item"><i class="fas fa-clipboard-list"></i>Login</a>
-      <a href="{{ url('/cadastro') }}" class="nav-item"><i class="fas fa-user-plus"></i>Cadastro</a>
-      <a href="{{ url('/perfil') }}" class="nav-item active"><i class="	fas fa-user-circle"></i>Perfil</a>
-
+      <a href="{{ url('/perfil') }}" class="nav-item"><i class="fas fa-user-circle"></i>Perfil</a>
+    </div>
+  </nav>
 
   <!-- CONTEÚDO PRINCIPAL - LOGIN -->
   <div class="login-container">
@@ -448,53 +454,47 @@
           <i class="fas fa-feather"></i>
           Bem-vindo
         </h1>
-      
       </div>
 
-     
-        <div class="input-group">
-          <label><i class="fas fa-envelope"></i> E-mail ou usuário</label>
-          <div class="input-wrapper">
-            <i class="fas fa-user input-icon"></i>
-            <input id="email" name="email" type="text" placeholder="seu@email.com" value="" required>
-          </div>
+      <div class="input-group">
+        <label><i class="fas fa-envelope"></i> E-mail ou usuário</label>
+        <div class="input-wrapper">
+          <i class="fas fa-user input-icon"></i>
+          <input id="email" name="email" type="text" placeholder="seu@email.com" value="" required>
         </div>
+      </div>
 
-        <!-- Campo de Senha -->
-        <div class="input-group">
-          <label><i class="fas fa-lock"></i> Senha</label>
-          <div class="input-wrapper">
-            <i class="fas fa-key input-icon"></i>
-            <input  id="senha" name="senha" type="password" placeholder="••••••••" value="" required>
-            <button type="button" class="toggle-password" onclick="togglePassword()">
-              <i class="fas fa-eye" id="toggleIcon"></i>
-            </button>
-          </div>
+      <!-- Campo de Senha -->
+      <div class="input-group">
+        <label><i class="fas fa-lock"></i> Senha</label>
+        <div class="input-wrapper">
+          <i class="fas fa-key input-icon"></i>
+          <input id="senha" name="senha" type="password" placeholder="••••••••" value="" required>
+          <button type="button" class="toggle-password" onclick="togglePassword()">
+            <i class="fas fa-eye" id="toggleIcon"></i>
+          </button>
         </div>
+      </div>
 
-      
+      <!-- Botão de Login -->
+      <button type="button" class="login-btn" id="meuid">
+        <i class="fas fa-sign-in-alt"></i> Entrar na estante
+      </button>
 
-        <!-- Botão de Login -->
-        <button type="button" class="login-btn" id="meuid">
-          <i class="fas fa-sign-in-alt"></i> Entrar na estante
-        </button>
+      <!-- Seção de Cadastro -->
+      <div class="register-section">
+        <p>Ainda não tem uma estante?</p>
+        <a href="{{ url('/cadastro') }}" class="register-link">
+          <i class="fas fa-user-plus"></i> Criar conta gratuita
+        </a>
+      </div>
 
-        <!-- Seção de Cadastro -->
-        <div class="register-section">
-          <p>Ainda não tem uma estante?</p>
-          <a href="{{ url('/cadastro') }}" class="register-link">
-            <i class="fas fa-user-plus"></i> Criar conta gratuita
-          </a>
-        </div >
-        
-
-        <!-- Decoração com livrinhos -->
-        <div class="book-decoration">
-          <i class="fas fa-book"></i>
-          <i class="fas fa-book-open"></i>
-          <i class="fas fa-book"></i>
-        </div>
-      
+      <!-- Decoração com livrinhos -->
+      <div class="book-decoration">
+        <i class="fas fa-book"></i>
+        <i class="fas fa-book-open"></i>
+        <i class="fas fa-book"></i>
+      </div>
     </div>
   </div>
 
@@ -513,7 +513,7 @@
   <!-- Script para mostrar/ocultar senha -->
   <script>
     function togglePassword() {
-      const passwordInput = document.getElementById('password');
+      const passwordInput = document.getElementById('senha');
       const toggleIcon = document.getElementById('toggleIcon');
       
       if (passwordInput.type === 'password') {

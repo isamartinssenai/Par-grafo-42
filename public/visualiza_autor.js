@@ -7,7 +7,7 @@ $(document).ready(function(){
         alert(token);
         
         $.ajax({
-            url: "http://127.0.0.1:8000/api/altera_autor",
+            url: "/api/altera_autor",
             method: "PUT",
             data: { 
                 id_autor:$("#id_autor").val(),

@@ -55,7 +55,9 @@ class AutorController extends Controller
         ]);
 
         try {
+            $usuario = $request->usuario;
             $autor = AutorModel::find($request->id_autor);
+            if ($autor->user_id == $usuario->id){
             $autor->nome = $request->nome;
             $autor->telefone = $request->telefone;
             $autor->cpf = $request->cpf;
@@ -67,6 +69,7 @@ class AutorController extends Controller
                 'erro' => 'n',
                 'autor' => $autor,
             ];
+            }
 
             return response()->json($data, 200);
 
@@ -78,48 +81,58 @@ class AutorController extends Controller
 
         public function exibe_autor($id)
     {
-
+        $usuario = $request->usuario;
         $autor = AutorModel::find($id);
+     
 
         $data = [
             'erro' => 'n',
             'autor' => $autor,
         ];
+        
 
         return response()->json($data, 200);
     }
 
     public function todos_autor(Request $request)
     {
-
+        $usuario = $request->usuario;
         $autor = AutorModel::get()->all();
+        if ($autor->user_id == $usuario->user_id){
 
         $data = [
             'erro' => 'n',
             'autor' => $autor,
         ];
+        }
 
         return response()->json($data, 200);
     }
 
     public function visualiza_autor($id_autor)
     {
-
+     
         $autor= AutorModel::find($id_autor);
+      
 
-        return view('visualiza_autor')->with('autor', $autor);
+        $info = [];
+        $info['autor'] = $autor;
+        return view('visualiza_autor',$info);
+       
 
     }
 
     public function deleta_autor($id_autor)
     {
-        $cadastro = Usuario::find($id_autor);
-
+     
+        $autor = AutorModel::find($id_autor);
+       
         return view('deleta_autor')->with('autor', $autor);
+        
 
     }
 
-    public function apagar_autrr(Request $request)
+    public function apaga_autor(Request $request)
     {
         $request->validate([
 
@@ -127,8 +140,10 @@ class AutorController extends Controller
 
         ]);
 
-        
+        $usuario = $request->usuario;
         $autor = AutorModel::find($request->id_autor);
+        if ($autor->user_id == $usuario->id){
+
 
         $autor->delete();
 
@@ -136,6 +151,7 @@ class AutorController extends Controller
             'erro' => 'n',
             'autor' => $autor,
         ];
+        }
 
         return response()->json($data, 200);
     }

@@ -312,6 +312,7 @@
       display: flex;
       flex-direction: column;
       gap: 0.3rem;
+      position: relative;
     }
 
     .info-label {
@@ -348,6 +349,36 @@
     input.info-value:focus {
       outline: 2px solid #b78c5a;
       outline-offset: 2px;
+    }
+
+    /* Estilo para o campo de senha com ícone */
+    .password-wrapper {
+      position: relative;
+      width: 100%;
+    }
+
+    .password-wrapper input {
+      width: 100%;
+      padding-right: 3rem;
+    }
+
+    .toggle-password {
+      position: absolute;
+      right: 10px;
+      top: 50%;
+      transform: translateY(-50%);
+      background: none;
+      border: none;
+      color: #b78c5a;
+      cursor: pointer;
+      font-size: 1.2rem;
+      padding: 5px;
+      transition: 0.2s;
+    }
+
+    .toggle-password:hover {
+      color: #1f3133;
+      transform: translateY(-50%) scale(1.1);
     }
 
     .preferencias-grid {
@@ -670,18 +701,19 @@
   </style>
 </head>
 <body>
-  <nav class="navbar">
+    <nav class="navbar">
     <div class="logo">
       <div class="logo-icon"><i class="fas fa-book-open"></i></div>
-      <div class="logo-text">Parágrafo 42<span></span></div>
+      <div class="logo-text">Parágrafo<span>42</span></div>
     </div>
     <div class="nav-links">
       <a href="{{ url('/home') }}" class="nav-item"><i class="fas fa-home"></i>Início</a>
       <a href="{{ url('/estante') }}" class="nav-item"><i class="fas fa-layer-group"></i>Estante</a>
       <a href="{{ url('/inicio') }}" class="nav-item"><i class="fas fa-book-medical"></i>Cadastre seu livro</a>
+      <a href="{{ url('/autor') }}" class="nav-item"><i class="fas fa-feather"></i>Cadastrar Autor</a>
+      <a href="{{ url('/prevendas') }}" class="nav-item"><i class="fas fa-cart-shopping"></i>Pré vendas</a>
       <a href="{{ url('/login') }}" class="nav-item"><i class="fas fa-clipboard-list"></i>Login</a>
-      <a href="{{ url('/cadastro') }}" class="nav-item"><i class="fas fa-user-plus"></i>Cadastro</a>
-      <a href="{{ url('/perfil') }}" class="nav-item active"><i class="	fas fa-user-circle"></i>Perfil</a>
+      <a href="{{ url('/perfil') }}" class="nav-item active"><i class="fas fa-user-circle"></i>Perfil</a>
     </div>
   </nav>
 
@@ -739,7 +771,12 @@
             </div>
             <div class="info-item">
               <span class="info-label"><i class="fas fa-eye"></i> Senha</span>
-              <input type="password" id="senha" name="senha" class="info-value" value="{{ $cadastro->senha}}" placeholder="********" required>
+              <div class="password-wrapper">
+                <input type="password" id="senha" name="senha" class="info-value" value="{{ $cadastro->senha}}" placeholder="********" required>
+                <button type="button" class="toggle-password" onclick="togglePassword()">
+                  <i class="fas fa-eye" id="toggleIcon"></i>
+                </button>
+              </div>
             </div>
           </div>
         </div>
@@ -767,13 +804,28 @@
       <a href="#"><i class="fas fa-envelope"></i></a>
     </div>
   </footer>
-</body>
 
-<script>
-function confirmarSair() {
-  if (confirm('Deseja mesmo sair?')) {
-    window.location.href = "{{ url('/home') }}";
-  }
-}
-</script>
+  <script>
+    function togglePassword() {
+      const passwordInput = document.getElementById('senha');
+      const toggleIcon = document.getElementById('toggleIcon');
+      
+      if (passwordInput.type === 'password') {
+        passwordInput.type = 'text';
+        toggleIcon.classList.remove('fa-eye');
+        toggleIcon.classList.add('fa-eye-slash');
+      } else {
+        passwordInput.type = 'password';
+        toggleIcon.classList.remove('fa-eye-slash');
+        toggleIcon.classList.add('fa-eye');
+      }
+    }
+
+    function confirmarSair() {
+      if (confirm('Deseja mesmo sair?')) {
+        window.location.href = "{{ url('/login') }}";
+      }
+    }
+  </script>
+</body>
 </html>
