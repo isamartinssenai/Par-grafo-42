@@ -10,6 +10,10 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
   <!-- Sweet Alert -->
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.min.js"></script>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
   
   <style>
     * {
@@ -19,6 +23,7 @@
     }
 
     body {
+      padding-top: 80px;
       font-family: 'Cormorant Garamond', 'Georgia', serif;
       background-image: url('chat.png');
       background-size: contain;
@@ -524,28 +529,95 @@
   </style>
 </head>
 <body>
-  <!-- NAVBAR (igual à da estante) -->
- <nav class="navbar">
-    <div class="logo">
-      <div class="logo-icon"><i class="fas fa-book-open"></i></div>
-      <div class="logo-text">Parágrafo<span>42</span></div>
+<nav class="navbar fixed-top" style="background: linear-gradient(105deg, #1a2e30 0%, #1d3537 100%); border-bottom: 3px solid #b78c5a;">
+  <div class="container-fluid">
+
+    <!-- LOGO -->
+    <a class="navbar-brand d-flex align-items-center gap-2 text-white" href="#">
+      <div style="background:#b78c5a; width:40px; height:40px; border-radius:50%; display:flex; align-items:center; justify-content:center;">
+        <i class="fas fa-book-open" style="color:#1f3133;"></i>
+      </div>
+      <span style="font-weight:600;">Parágrafo <span style="color:#e6c9a8;">42</span></span>
+    </a>
+
+    <!-- BOTÃO -->
+    <button class="navbar-toggler text-white border-0" type="button" data-bs-toggle="offcanvas" data-bs-target="#menuLateral">
+      <i class="fas fa-bars"></i>
+    </button>
+
+    <!-- MENU LATERAL -->
+    <div class="offcanvas offcanvas-end text-bg-dark" tabindex="-1" id="menuLateral">
+      
+      <div class="offcanvas-header" style="border-bottom: 2px solid #b78c5a;">
+        <h5 class="offcanvas-title">Menu</h5>
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas"></button>
+      </div>
+
+      <div class="offcanvas-body">
+
+        <ul class="navbar-nav gap-2">
+
+          <li class="nav-item">
+            <a class="nav-link text-white" href="{{ url('/home') }}">
+              <i class="fas fa-home me-2"></i>Início
+            </a>
+          </li>
+
+          <li class="nav-item">
+            <a class="nav-link text-white" href="{{ url('/estante') }}">
+              <i class="fas fa-layer-group me-2"></i>Estante
+            </a>
+          </li>
+
+          <li class="nav-item">
+            <a class="nav-link text-white" href="{{ url('/inicio') }}">
+              <i class="fas fa-book-medical me-2"></i>Cadastre seu livro
+            </a>
+          </li>
+
+          <li class="nav-item">
+            <a class="nav-link text-white" href="{{ url('/autor') }}">
+              <i class="fas fa-feather me-2"></i>Cadastrar Autor
+            </a>
+          </li>
+
+          <li class="nav-item">
+            <a class="nav-link text-warning fw-bold" href="{{ url('/prevendas') }}">
+              <i class="fas fa-heart me-2"></i>Favoritar
+            </a>
+          </li>
+
+          <li class="nav-item">
+            <a class="nav-link text-white" href="{{ url('/dashboard') }}">
+              <i class="fas fa-chart-line me-2"></i>Dashboard
+            </a>
+          </li>
+
+          <li class="nav-item">
+            <a class="nav-link text-white" href="{{ url('/login') }}">
+              <i class="fas fa-clipboard-list me-2"></i>Login
+            </a>
+          </li>
+
+          <li class="nav-item">
+            <a class="nav-link text-white" href="{{ url('/perfil') }}">
+              <i class="fas fa-user-circle me-2"></i>Perfil
+            </a>
+          </li>
+
+        </ul>
+
+      </div>
     </div>
-    <div class="nav-links">
-      <a href="{{ url('/home') }}" class="nav-item"><i class="fas fa-home"></i>Início</a>
-      <a href="{{ url('/estante') }}" class="nav-item"><i class="fas fa-layer-group"></i>Estante</a>
-      <a href="{{ url('/inicio') }}" class="nav-item"><i class="fas fa-book-medical"></i>Cadastre seu livro</a>
-      <a href="{{ url('/autor') }}" class="nav-item active"><i class="fas fa-feather"></i>Cadastrar Autor</a>
-      <a href="{{ url('/prevendas') }}" class="nav-item"><i class="fas fa-cart-shopping"></i>Pré vendas</a>
-      <a href="{{ url('/login') }}" class="nav-item"><i class="fas fa-clipboard-list"></i>Login</a>
-      <a href="{{ url('/perfil') }}" class="nav-item"><i class="fas fa-user-circle"></i>Perfil</a>
-    </div>
-  </nav>
+
+  </div>
+</nav>
 
   
   <main>
     <section class="pre-venda-section">
       <div class="pre-venda-titulo">
-        <h2><i class="fas fa-clock"></i> Lançamentos em Pré-venda</h2>
+        <h2><i class="fas fa-clock"></i> Lançamentos para favoritar!</h2>
         <div class="pre-venda-subtitulo">
          
         </div>
@@ -593,81 +665,26 @@
         </div>
       </div>
 
-      
+   
 
       <div class="pre-venda-grid">
+          @foreach ($livros as $livro)
         <!-- Livro 1 -->
         <div class="livro-pre-card">
-          <span class="badge-pre">PRÉ-VENDA</span>
           <div class="livro-pre-capa">
-            <img src="cidade.jpg" alt="A Cidade dos Etéreos" onerror="this.style.display='none'; this.parentElement.innerHTML='<i class=\'fas fa-book\' style=\'font-size:5rem;color:#1f3133;\'></i>'">
+            <img src="celular(1).png" alt="A Cidade dos Etéreos" onerror="this.style.display='none'; this.parentElement.innerHTML='<i class=\'fas fa-book\' style=\'font-size:5rem;color:#1f3133;\'></i>'">
           </div>
           <div class="livro-pre-info">
-            <div class="livro-pre-titulo">A Cidade dos Etéreos</div>
-            <div class="livro-pre-autor">R.F. Kuang</div>
-            <div class="livro-pre-preco">
-              R$ 59,90 <small>R$ 79,90</small>
-            </div>
-            <button class="btn-pre-small" onclick="reservarLivro('A Cidade dos Etéreos')">
-              <i class="fas fa-clock"></i> Reservar
+            <div class="livro-pre-titulo">{{$livro->titulo}}</div>
+            <div class="livro-pre-autor">{{$livro->autor}}</div>
+            <button class="btn-pre-small" onclick="favoritar({{$livro->id}})">
+              <i class="fas fa-heart"></i> Favoritar
             </button>
           </div>
         </div>
-
-        <!-- Livro 2 -->
-        <div class="livro-pre-card">
-          <span class="badge-pre">PRÉ-VENDA</span>
-          <div class="livro-pre-capa">
-            <img src="vermeio.jpg" alt="Vermelho, Branco e Sangue Azul" onerror="this.style.display='none'; this.parentElement.innerHTML='<i class=\'fas fa-book-open\' style=\'font-size:5rem;color:#1f3133;\'></i>'">
-          </div>
-          <div class="livro-pre-info">
-            <div class="livro-pre-titulo">Vermelho, Branco e Sangue Azul</div>
-            <div class="livro-pre-autor">Casey McQuiston</div>
-            <div class="livro-pre-preco">
-              R$ 49,90 <small>R$ 64,90</small>
-            </div>
-            <button class="btn-pre-small" onclick="reservarLivro('Vermelho, Branco e Sangue Azul')">
-              <i class="fas fa-clock"></i> Reservar
-            </button>
-          </div>
-        </div>
-
-        <!-- Livro 3 -->
-        <div class="livro-pre-card">
-          <span class="badge-pre">PRÉ-VENDA</span>
-          <div class="livro-pre-capa">
-            <img src="rio.jpg" alt="Tudo é Rio" onerror="this.style.display='none'; this.parentElement.innerHTML='<i class=\'fas fa-book\' style=\'font-size:5rem;color:#1f3133;\'></i>'">
-          </div>
-          <div class="livro-pre-info">
-            <div class="livro-pre-titulo">Tudo é Rio</div>
-            <div class="livro-pre-autor">Carla Madeira</div>
-            <div class="livro-pre-preco">
-              R$ 54,90 <small>R$ 69,90</small>
-            </div>
-            <button class="btn-pre-small" onclick="reservarLivro('Tudo é Rio')">
-              <i class="fas fa-clock"></i> Reservar
-            </button>
-          </div>
-        </div>
-
-        <!-- Livro 4 -->
-        <div class="livro-pre-card">
-          <span class="badge-pre">PRÉ-VENDA</span>
-          <div class="livro-pre-capa">
-            <img src="problema.jpg" alt="O Problema dos Três Corpos" onerror="this.style.display='none'; this.parentElement.innerHTML='<i class=\'fas fa-book-open\' style=\'font-size:5rem;color:#1f3133;\'></i>'">
-          </div>
-          <div class="livro-pre-info">
-            <div class="livro-pre-titulo">O Problema dos Três Corpos</div>
-            <div class="livro-pre-autor">Cixin Liu</div>
-            <div class="livro-pre-preco">
-              R$ 74,90 <small>R$ 99,90</small>
-            </div>
-            <button class="btn-pre-small" onclick="reservarLivro('O Problema dos Três Corpos')">
-              <i class="fas fa-clock"></i> Reservar
-            </button>
-          </div>
-        </div>
+        @endforeach
       </div>
+  
 
       <!-- INFORMAÇÕES EXTRAS -->
       <div class="info-extra">
@@ -704,46 +721,35 @@
       </div>
 
      
- 
+ <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
-  <!-- Scripts do Sweet Alert -->
   <script>
-    // Função para o botão principal de pré-venda
-    function confirmarPreVenda() {
-      Swal.fire({
-        title: '📚 Pré-venda garantida!',
-        html: `
-          <div style="text-align: center;">
-            <i class="fas fa-check-circle" style="color: #b78c5a; font-size: 3rem; margin-bottom: 1rem;"></i>
-            <p style="font-size: 1.1rem; margin-bottom: 0.5rem;"><strong>O Nome do Vento</strong></p>
-            <p style="color: #5f7375;">Patrick Rothfuss</p>
-            <p style="margin-top: 1rem; padding: 0.5rem; background: #f0e8de; border-radius: 50px;">
-              <i class="fas fa-clock" style="color: #b78c5a;"></i> Chega em até 15 dias
-            </p>
-          </div>
-        `,
-        icon: 'success',
-        background: '#fcfaf7',
-        color: '#1f3133',
-        confirmButtonColor: '#b78c5a',
+function favoritar(livroId) {
+  let token = $.cookie('token');
 
-      });
-    }
+  fetch('/api/favoritar', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer ' + token,
+      'token': token
+    },
+    body: JSON.stringify({
+      livro_id: livroId,
+      token: token
+    })
+  })
+  .then(res => res.json())
+  .then(data => {
+    console.log(data);
 
-    // Função para os botões de reservar dos cards
-    function reservarLivro(titulo) {
-      Swal.fire({
-        title: '📖 Reserva realizada!',
-        text: `"${titulo}" foi adicionado à sua pré-venda.`,
-        icon: 'success',
-        background: '#fcfaf7',
-        color: '#1f3133',
-        confirmButtonColor: '#b78c5a',
-        confirmButtonText: 'OK',
-        timer: 3000,
-        timerProgressBar: true
-      });
+    if(data.erro === 's'){
+      Swal.fire('Erro', data.msg, 'error');
+    } else {
+      Swal.fire('❤️ Favoritado!', 'Livro adicionado!', 'success');
     }
+  });
+}
 
     // Função para newsletter
     function inscreverNewsletter() {

@@ -18,7 +18,8 @@ class LivroModel extends Model
         'isbn',
         'paginas',
         'preco',
-        'genero'
+        'genero',
+        'user_id'
     ];
 }
 

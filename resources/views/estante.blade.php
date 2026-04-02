@@ -8,6 +8,8 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
   
   <style>
     * {
@@ -17,11 +19,13 @@
     }
 
     body {
+      padding-top: 80px;
       font-family: 'Cormorant Garamond', 'Georgia', serif;
       background-image: url('chat.png');
       background-size:contain;
       color: #1e2b2c;
       line-height: 1.5;
+      padding-top: 80px;
     }
 
     /* NAVBAR (igual ao original) */
@@ -279,22 +283,89 @@
   </style>
 </head>
 <body>
-  <!-- NAVBAR (igual) -->
- <nav class="navbar">
-    <div class="logo">
-      <div class="logo-icon"><i class="fas fa-book-open"></i></div>
-      <div class="logo-text">Parágrafo<span>42</span></div>
+<nav class="navbar fixed-top" style="background: linear-gradient(105deg, #1a2e30 0%, #1d3537 100%); border-bottom: 3px solid #b78c5a;">
+  <div class="container-fluid">
+
+    <!-- LOGO -->
+    <a class="navbar-brand d-flex align-items-center gap-2 text-white" href="#">
+      <div style="background:#b78c5a; width:40px; height:40px; border-radius:50%; display:flex; align-items:center; justify-content:center;">
+        <i class="fas fa-book-open" style="color:#1f3133;"></i>
+      </div>
+      <span style="font-weight:600;">Parágrafo <span style="color:#e6c9a8;">42</span></span>
+    </a>
+
+    <!-- BOTÃO -->
+    <button class="navbar-toggler text-white border-0" type="button" data-bs-toggle="offcanvas" data-bs-target="#menuLateral">
+      <i class="fas fa-bars"></i>
+    </button>
+
+    <!-- MENU LATERAL -->
+    <div class="offcanvas offcanvas-end text-bg-dark" tabindex="-1" id="menuLateral">
+      
+      <div class="offcanvas-header" style="border-bottom: 2px solid #b78c5a;">
+        <h5 class="offcanvas-title">Menu</h5>
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas"></button>
+      </div>
+
+      <div class="offcanvas-body">
+
+        <ul class="navbar-nav gap-2">
+
+          <li class="nav-item">
+            <a class="nav-link text-white" href="{{ url('/home') }}">
+              <i class="fas fa-home me-2"></i>Início
+            </a>
+          </li>
+
+          <li class="nav-item">
+            <a class="nav-link text-warning fw-bold" href="{{ url('/estante') }}">
+              <i class="fas fa-layer-group me-2"></i>Estante
+            </a>
+          </li>
+
+          <li class="nav-item">
+            <a class="nav-link text-white" href="{{ url('/inicio') }}">
+              <i class="fas fa-book-medical me-2"></i>Cadastre seu livro
+            </a>
+          </li>
+
+          <li class="nav-item">
+            <a class="nav-link text-white" href="{{ url('/autor') }}">
+              <i class="fas fa-feather me-2"></i>Cadastrar Autor
+            </a>
+          </li>
+
+          <li class="nav-item">
+            <a class="nav-link text-white" href="{{ url('/prevendas') }}">
+              <i class="fas fa-heart me-2"></i>Favoritar
+            </a>
+          </li>
+
+          <li class="nav-item">
+            <a class="nav-link text-white" href="{{ url('/dashboard') }}">
+              <i class="fas fa-chart-line me-2"></i>Dashboard
+            </a>
+          </li>
+
+          <li class="nav-item">
+            <a class="nav-link text-white" href="{{ url('/login') }}">
+              <i class="fas fa-clipboard-list me-2"></i>Login
+            </a>
+          </li>
+
+          <li class="nav-item">
+            <a class="nav-link text-white" href="{{ url('/perfil') }}">
+              <i class="fas fa-user-circle me-2"></i>Perfil
+            </a>
+          </li>
+
+        </ul>
+
+      </div>
     </div>
-    <div class="nav-links">
-      <a href="{{ url('/home') }}" class="nav-item"><i class="fas fa-home"></i>Início</a>
-      <a href="{{ url('/estante') }}" class="nav-item"><i class="fas fa-layer-group"></i>Estante</a>
-      <a href="{{ url('/inicio') }}" class="nav-item"><i class="fas fa-book-medical"></i>Cadastre seu livro</a>
-      <a href="{{ url('/autor') }}" class="nav-item active"><i class="fas fa-feather"></i>Cadastrar Autor</a>
-      <a href="{{ url('/prevendas') }}" class="nav-item"><i class="fas fa-cart-shopping"></i>Pré vendas</a>
-      <a href="{{ url('/login') }}" class="nav-item"><i class="fas fa-clipboard-list"></i>Login</a>
-      <a href="{{ url('/perfil') }}" class="nav-item"><i class="fas fa-user-circle"></i>Perfil</a>
-    </div>
-  </nav>
+
+  </div>
+</nav>
 
 
   <main>

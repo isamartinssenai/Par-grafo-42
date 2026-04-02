@@ -7,7 +7,6 @@ use App\Http\COntrollers\UsuarioController;
 use App\Http\COntrollers\AutorController;
 use App\Http\Middleware\auth_api;
 
-
 Route::get('/livraria', [LivrariaController::class, 'index']);
      
 Route::get('/exibe_livro/{id}',[LivroController::class,'exibe_livro']);
@@ -19,6 +18,9 @@ Route::delete('/deleta_cadastro',[UsuarioController::class,'apagar_cadastro']);
 
 
 Route::middleware(auth_api::class)->group(function(){
+
+  Route::post('/favoritar', [LivroController::class, 'favoritar']);
+
   Route::post('/cadastra_autor',[AutorController::class,'cadastra_autor']);
   Route::put('/altera_autor',[AutorController::class,'altera_autor']);
   Route::delete('/deleta_autor',[AutorController::class,'apaga_autor']);
@@ -27,4 +29,6 @@ Route::middleware(auth_api::class)->group(function(){
   Route::post('/salva_livro',[LivroController::class,'salva_livro']);  
   Route::put('/altera_livro',[LivroController::class,'altera_livro']);
   Route::delete('/deleta_livro',[LivroController::class,'apagar_livro']);
+
+  Route::get('/dashboard', [LivroController::class, 'dashboard']);
 });

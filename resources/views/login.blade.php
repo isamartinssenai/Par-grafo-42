@@ -12,6 +12,7 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
+
   <script src="../login.js" ></script>
 
   <style>
@@ -22,6 +23,7 @@
     }
 
     body {
+      padding-top: 8px;
       font-family: 'Cormorant Garamond', 'Georgia', serif;
       background-image: url('chat.png');
       background-size: cover;
@@ -429,22 +431,6 @@
   </style>
 </head>
 <body>
-  <!-- NAVBAR CORRIGIDA COM TODOS OS ITENS DENTRO -->
-  <nav class="navbar">
-    <div class="logo">
-      <div class="logo-icon"><i class="fas fa-book-open"></i></div>
-      <div class="logo-text">Parágrafo<span>42</span></div>
-    </div>
-    <div class="nav-links">
-      <a href="{{ url('/home') }}" class="nav-item"><i class="fas fa-home"></i>Início</a>
-      <a href="{{ url('/estante') }}" class="nav-item"><i class="fas fa-layer-group"></i>Estante</a>
-      <a href="{{ url('/inicio') }}" class="nav-item"><i class="fas fa-book-medical"></i>Cadastre seu livro</a>
-      <a href="{{ url('/autor') }}" class="nav-item active"><i class="fas fa-feather"></i>Cadastrar Autor</a>
-      <a href="{{ url('/prevendas') }}" class="nav-item"><i class="fas fa-cart-shopping"></i>Pré vendas</a>
-      <a href="{{ url('/login') }}" class="nav-item"><i class="fas fa-clipboard-list"></i>Login</a>
-      <a href="{{ url('/perfil') }}" class="nav-item"><i class="fas fa-user-circle"></i>Perfil</a>
-    </div>
-  </nav>
 
   <!-- CONTEÚDO PRINCIPAL - LOGIN -->
   <div class="login-container">
