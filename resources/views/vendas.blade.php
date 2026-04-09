@@ -63,6 +63,124 @@
       box-shadow: 0 3px 8px rgba(0,0,0,0.2);
     }
 
+    /* =========================
+   SINOPSE PREMIUM
+========================= */
+
+.sinopse-premium {
+  border-radius: 2rem;
+  border: 2px solid #b78c5a;
+  background: linear-gradient(145deg, #fcfaf7, #f2eadf);
+  overflow: hidden;
+}
+
+/* HEADER */
+.sinopse-header {
+  background: linear-gradient(90deg, #1f3133, #2d4a4d);
+  color: white;
+  border-bottom: 2px solid #b78c5a;
+}
+
+.sinopse-header .modal-title {
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.sinopse-header i {
+  color: #e6c9a8;
+}
+
+/* BODY */
+.sinopse-container {
+  padding: 1rem;
+}
+
+.sinopse-titulo {
+  color: #1f3133;
+  font-size: 1.6rem;
+  font-weight: 700;
+  margin-bottom: 1.5rem;
+}
+
+/* CAIXA BONITA */
+.sinopse-box {
+  background: linear-gradient(145deg, #f8f4ee, #efe6da);
+  padding: 1.8rem;
+  border-radius: 1.2rem;
+  border: 1px solid #e2d5c3;
+  position: relative;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.08);
+  transition: 0.3s;
+}
+
+.sinopse-box:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 15px 35px rgba(0,0,0,0.12);
+}
+
+/* BARRA LATERAL */
+.sinopse-box::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 15px;
+  bottom: 15px;
+  width: 6px;
+  border-radius: 10px;
+  background: linear-gradient(to bottom, #b78c5a, #8c6a45);
+}
+
+.sinopse-box p {
+  font-size: 1.05rem;
+  line-height: 1.8;
+  color: #3f5355;
+  margin: 0;
+  text-align: justify;
+}
+
+/* FOOTER */
+.sinopse-footer {
+  border-top: 2px solid #b78c5a;
+  display: flex;
+  justify-content: flex-end;
+  gap: 1rem;
+  padding: 1rem 1.5rem;
+}
+
+/* BOTÕES MELHORADOS */
+.btn-pdf {
+  background: linear-gradient(135deg, #b78c5a, #8c6a45);
+  border: none;
+  color: white;
+  font-weight: 600;
+  padding: 0.6rem 1.5rem;
+  border-radius: 50px;
+  transition: 0.3s;
+}
+
+.btn-pdf:hover {
+  transform: scale(1.05);
+  background: #1f3133;
+  color: #e6c9a8;
+}
+
+.btn-sair-modal {
+  background: transparent;
+  border: 2px solid #b78c5a;
+  color: #1f3133;
+  font-weight: 600;
+  padding: 0.6rem 1.5rem;
+  border-radius: 50px;
+  transition: 0.3s;
+}
+
+.btn-sair-modal:hover {
+  background: #b78c5a;
+  color: white;
+}
+
     .logo-text {
       font-weight: 600;
       font-size: 1.9rem;
@@ -290,7 +408,7 @@
     /* Grid de livros em pré-venda */
     .pre-venda-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
       gap: 2rem;
       margin: 3rem 0;
     }
@@ -371,6 +489,116 @@
       font-size: 0.8rem;
       color: #8a9b9d;
       text-decoration: line-through;
+    }
+
+    /* Container dos botões no card */
+    .card-buttons {
+      display: flex;
+      gap: 0.6rem;
+      margin-top: 0.8rem;
+      justify-content: center;
+    }
+
+    .btn-card {
+      background: transparent;
+      border: 2px solid #b78c5a;
+      color: #1f3133;
+      font-weight: 600;
+      padding: 0.5rem 0.8rem;
+      border-radius: 40px;
+      cursor: pointer;
+      transition: 0.3s;
+      font-size: 0.8rem;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .btn-card i {
+      font-size: 0.85rem;
+    }
+
+    .btn-card:hover {
+      background: #b78c5a;
+      color: white;
+    }
+
+    .btn-favoritar:hover {
+      background: #b78c5a;
+      color: white;
+    }
+
+    .btn-sinopse:hover {
+      background: #b78c5a;
+      color: white;
+    }
+
+    /* Modal personalizado (mantendo estilo) */
+    .modal-sinopse .modal-content {
+      border-radius: 2rem;
+      border: 3px solid #b78c5a;
+      background: #fcfaf7;
+      color: #1f3133;
+    }
+
+    .modal-sinopse .modal-header {
+      border-bottom: 2px solid #b78c5a;
+      background: #f0e8de;
+      border-radius: 1.8rem 1.8rem 0 0;
+    }
+
+    .modal-sinopse .modal-header .btn-close {
+      background-color: #b78c5a;
+      opacity: 1;
+      border-radius: 50%;
+    }
+
+    .modal-sinopse .modal-title {
+      font-weight: 700;
+      color: #1f3133;
+    }
+
+    .modal-sinopse .modal-body {
+      font-size: 1rem;
+      line-height: 1.6;
+      max-height: 400px;
+      overflow-y: auto;
+    }
+
+    .modal-footer-buttons {
+      display: flex;
+      gap: 1rem;
+      justify-content: flex-end;
+    }
+
+    .btn-pdf {
+      background: #b78c5a;
+      border: none;
+      color: #1f3133;
+      font-weight: 600;
+      padding: 0.6rem 1.5rem;
+      border-radius: 50px;
+      transition: 0.3s;
+    }
+
+    .btn-pdf:hover {
+      background: #1f3133;
+      color: #e6c9a8;
+    }
+
+    .btn-sair-modal {
+      background: transparent;
+      border: 2px solid #b78c5a;
+      color: #1f3133;
+      font-weight: 600;
+      padding: 0.6rem 1.5rem;
+      border-radius: 50px;
+      transition: 0.3s;
+    }
+
+    .btn-sair-modal:hover {
+      background: #b78c5a;
+      color: white;
     }
 
     .btn-pre-small {
@@ -525,6 +753,9 @@
       .newsletter-input {
         flex-direction: column;
       }
+      .card-buttons {
+        flex-direction: column;
+      }
     }
   </style>
 </head>
@@ -614,117 +845,143 @@
 </nav>
 
   
-  <main>
-    <section class="pre-venda-section">
-      <div class="pre-venda-titulo">
-        <h2><i class="fas fa-clock"></i> Lançamentos para favoritar!</h2>
-        <div class="pre-venda-subtitulo">
-         
-        </div>
-      </div>
+<main>
+  <section class="pre-venda-section">
+    <div class="pre-venda-titulo">
+      <h2><i class="fas fa-clock"></i> Lançamentos para favoritar!</h2>
+      <div class="pre-venda-subtitulo"></div>
+    </div>
 
-      <!-- DESTAQUE PRINCIPAL -->
-      <div class="pre-venda-destaque">
-        <div class="destaque-capa">
-          <img src="vento.webp" alt="O Nome do Vento" onerror="this.src='https://via.placeholder.com/300x350?text=O+Nome+do+Vento'">
+    <!-- DESTAQUE PRINCIPAL -->
+    <div class="pre-venda-destaque">
+      <div class="destaque-capa">
+        <img src="vento.webp" alt="O Nome do Vento" onerror="this.src='https://via.placeholder.com/300x350?text=O+Nome+do+Vento'">
+      </div>
+      <div class="destaque-info">
+        <h3>O Nome do Vento</h3>
+        <div class="autor">Patrick Rothfuss</div>
+        <div class="descricao">
+          Edição especial de 15 anos com capa dura, ilustrações inéditas e 
+          conteúdo extra. A obra-prima da fantasia moderna em uma versão 
+          exclusiva para colecionadores.
         </div>
-        <div class="destaque-info">
-          <h3>O Nome do Vento</h3>
-          <div class="autor">Patrick Rothfuss</div>
-          <div class="descricao">
-            Edição especial de 15 anos com capa dura, ilustrações inéditas e 
-            conteúdo extra. A obra-prima da fantasia moderna em uma versão 
-            exclusiva para colecionadores.
+        <div class="preco-box">
+          <span class="preco-antigo">R$ 89,90</span>
+          <div class="preco-atual">R$ 69,90</div>
+          <div class="preco-parcelado">ou 3x de R$ 23,30 sem juros</div>
+        </div>
+        
+        <!-- CONTADOR REGRESSIVO -->
+        <div class="contador-regressivo">
+          <div class="contador-item">
+            <div class="contador-numero">15</div>
+            <div class="contador-label">dias</div>
           </div>
-          <div class="preco-box">
-            <span class="preco-antigo">R$ 89,90</span>
-            <div class="preco-atual">R$ 69,90</div>
-            <div class="preco-parcelado">ou 3x de R$ 23,30 sem juros</div>
+          <div class="contador-item">
+            <div class="contador-numero">08</div>
+            <div class="contador-label">horas</div>
           </div>
+          <div class="contador-item">
+            <div class="contador-numero">32</div>
+            <div class="contador-label">minutos</div>
+          </div>
+        </div>
+
+        <!-- BOTÃO COM SWEET ALERT -->
+        <button class="btn-pre-venda" onclick="confirmarPreVenda()">
+          <i class="fas fa-cart-plus"></i> Garantir minha pré-venda
+        </button>
+      </div>
+    </div>
+
+    <!-- GRID DE LIVROS COM BOTÕES FAVORITAR E SINOPSE -->
+    <div class="pre-venda-grid">
+      @foreach ($ebooks as $ebook)
+      <div class="livro-pre-card">
+        <div class="livro-pre-capa">
+          <img src="celular(1).png" alt="{{$ebook->titulo}}" onerror="this.style.display='none'; this.parentElement.innerHTML='<i class=\'fas fa-book\' style=\'font-size:5rem;color:#1f3133;\'></i>'">
+        </div>
+        <div class="livro-pre-info">
+          <div class="livro-pre-titulo">{{$ebook->titulo}}</div>
+          <div class="livro-pre-autor">{{$ebook->autor}}</div>
           
-          <!-- CONTADOR REGRESSIVO -->
-          <div class="contador-regressivo">
-            <div class="contador-item">
-              <div class="contador-numero">15</div>
-              <div class="contador-label">dias</div>
-            </div>
-            <div class="contador-item">
-              <div class="contador-numero">08</div>
-              <div class="contador-label">horas</div>
-            </div>
-            <div class="contador-item">
-              <div class="contador-numero">32</div>
-              <div class="contador-label">minutos</div>
-            </div>
-          </div>
-
-          <!-- BOTÃO COM SWEET ALERT -->
-          <button class="btn-pre-venda" onclick="confirmarPreVenda()">
-            <i class="fas fa-cart-plus"></i> Garantir minha pré-venda
-          </button>
-        </div>
-      </div>
-
-   
-
-      <div class="pre-venda-grid">
-          @foreach ($livros as $livro)
-        <!-- Livro 1 -->
-        <div class="livro-pre-card">
-          <div class="livro-pre-capa">
-            <img src="celular(1).png" alt="A Cidade dos Etéreos" onerror="this.style.display='none'; this.parentElement.innerHTML='<i class=\'fas fa-book\' style=\'font-size:5rem;color:#1f3133;\'></i>'">
-          </div>
-          <div class="livro-pre-info">
-            <div class="livro-pre-titulo">{{$livro->titulo}}</div>
-            <div class="livro-pre-autor">{{$livro->autor}}</div>
-            <button class="btn-pre-small" onclick="favoritar({{$livro->id}})">
+          <!-- Botões pequenos de favoritar e abrir sinopse -->
+          <div class="card-buttons">
+            <button class="btn-card btn-favoritar" onclick="favoritar({{$ebook->id}})">
               <i class="fas fa-heart"></i> Favoritar
+            </button>
+            <button class="btn-card btn-sinopse" onclick="abrirSinopse({{$ebook->id}}, '{{ addslashes($ebook->titulo) }}', '{{ addslashes($ebook->sinopse) }}')">
+              <i class="fas fa-book-open"></i> Sinopse
             </button>
           </div>
         </div>
-        @endforeach
       </div>
-  
+      @endforeach
+    </div>
 
-      <!-- INFORMAÇÕES EXTRAS -->
-      <div class="info-extra">
-        <div class="info-item">
-          <i class="fas fa-truck"></i>
-          <h4>Frete Grátis</h4>
-          <p>Para pedidos acima de R$ 150</p>
-        </div>
-        <div class="info-item">
-          <i class="fas fa-gift"></i>
-          <h4>Brinde Exclusivo</h4>
-          <p>Marca-página da coleção</p>
-        </div>
-        <div class="info-item">
-          <i class="fas fa-lock"></i>
-          <h4>Pagamento Seguro</h4>
-          <p>Compra protegida</p>
-        </div>
-        <div class="info-item">
-          <i class="fas fa-clock"></i>
-          <h4>Garantia de Preço</h4>
-          <p>Menor preço na pré-venda</p>
-        </div>
+    <!-- INFORMAÇÕES EXTRAS -->
+    <div class="info-extra">
+      <div class="info-item">
+        <i class="fas fa-truck"></i>
+        <h4>Frete Grátis</h4>
+        <p>Para pedidos acima de R$ 150</p>
+      </div>
+      <div class="info-item">
+        <i class="fas fa-gift"></i>
+        <h4>Brinde Exclusivo</h4>
+        <p>Marca-página da coleção</p>
+      </div>
+      <div class="info-item">
+        <i class="fas fa-lock"></i>
+        <h4>Pagamento Seguro</h4>
+        <p>Compra protegida</p>
+      </div>
+      <div class="info-item">
+        <i class="fas fa-clock"></i>
+        <h4>Garantia de Preço</h4>
+        <p>Menor preço na pré-venda</p>
+      </div>
+    </div>
+  </section>
+</main>
+
+<!-- MODAL PARA SINOPSE (com botão de baixar PDF e sair) -->
+<div class="modal fade modal-sinopse" id="sinopseModal" tabindex="-1">
+  <div class="modal-dialog modal-dialog-centered modal-lg">
+    <div class="modal-content sinopse-premium">
+
+      <div class="modal-header sinopse-header">
+        <h5 class="modal-title">
+          <i class="fas fa-book-open"></i> Sinopse
+        </h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
       </div>
 
-      <!-- NEWSLETTER -->
-      <div class="newsletter">
-        <h3><i class="fas fa-envelope-open-text"></i> Quer saber dos lançamentos primeiro?</h3>
-        <p>Cadastre-se e receba novidades e ofertas exclusivas de pré-venda</p>
-        <div class="newsletter-input">
-          <input type="email" id="newsletterEmail" placeholder=" E-mail" value="">
-          <button onclick="inscreverNewsletter()">Inscrever</button>
-        </div>
+      <div class="modal-body" id="sinopseModalBody"></div>
+
+      <div class="modal-footer sinopse-footer">
+        <button class="btn-pdf" id="baixarPdfBtn">
+          <i class="fas fa-file-pdf"></i> Baixar PDF
+        </button>
+
+        <button class="btn-sair-modal" data-bs-dismiss="modal">
+          <i class="fas fa-times"></i> Fechar
+        </button>
       </div>
 
-     
- <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    </div>
+  </div>
+</div>
 
-  <script>
-function favoritar(livroId) {
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<script>
+let currentEbookId = null;
+
+/* =========================
+   FAVORITAR
+========================= */
+function favoritar(ebookId) {
   let token = $.cookie('token');
 
   fetch('/api/favoritar', {
@@ -735,64 +992,139 @@ function favoritar(livroId) {
       'token': token
     },
     body: JSON.stringify({
-      livro_id: livroId,
+      ebook_id: ebookId,
       token: token
     })
   })
   .then(res => res.json())
   .then(data => {
-    console.log(data);
-
     if(data.erro === 's'){
       Swal.fire('Erro', data.msg, 'error');
     } else {
-      Swal.fire('❤️ Favoritado!', 'Livro adicionado!', 'success');
+      Swal.fire('❤️ Favoritado!', 'Livro adicionado aos favoritos!', 'success');
     }
+  })
+  .catch(() => {
+    Swal.fire('Erro', 'Não foi possível favoritar o livro.', 'error');
   });
 }
 
-    // Função para newsletter
-    function inscreverNewsletter() {
-      const email = document.getElementById('newsletterEmail').value;
-      Swal.fire({
-        title: '✉️ Inscrição confirmada!',
-        html: `
-          <p>Enviaremos novidades para:</p>
-          <p style="font-weight: bold; color: #b78c5a;">${email}</p>
-        `,
-        icon: 'success',
-        background: '#fcfaf7',
-        color: '#1f3133',
-        confirmButtonColor: '#b78c5a',
-        timer: 4000,
-        timerProgressBar: true
-      });
+
+/* =========================
+   ABRIR SINOPSE
+========================= */
+function abrirSinopse(ebookId, titulo, sinopse) {
+  currentEbookId = ebookId;
+
+  const modalBody = document.getElementById('sinopseModalBody');
+
+  modalBody.innerHTML = `
+    <div class="sinopse-container">
+
+      <h4 class="sinopse-titulo">
+        ${titulo}
+      </h4>
+
+      <div class="sinopse-box">
+        <p>
+          ${sinopse || 'Sinopse não disponível para este livro.'}
+        </p>
+      </div>
+
+    </div>
+  `;
+
+  const modal = new bootstrap.Modal(document.getElementById('sinopseModal'));
+  modal.show();
+}
+
+
+/* =========================
+   DOWNLOAD PDF (CORRIGIDO)
+========================= */
+document.addEventListener('click', function(e) {
+  if (e.target.closest('#baixarPdfBtn')) {
+
+    if (!currentEbookId) {
+      Swal.fire('Erro', 'Nenhum livro selecionado.', 'error');
+      return;
     }
 
-    // Função para ver mais lançamentos
-    function verMaisLancamentos() {
+    // feedback visual
+    Swal.fire({
+      title: '📄 Gerando PDF...',
+      text: 'Aguarde um instante',
+      allowOutsideClick: false,
+      didOpen: () => {
+        Swal.showLoading();
+      }
+    });
+
+    // abre o download
+    setTimeout(() => {
+      window.open(`/api/ebooks/${currentEbookId}/pdf`, '_blank');
+
       Swal.fire({
-        title: '🔍 Carregando...',
-        text: 'Buscando mais lançamentos para você',
-        icon: 'info',
-        background: '#fcfaf7',
-        color: '#1f3133',
-        confirmButtonColor: '#b78c5a',
-        confirmButtonText: 'OK',
-        timer: 2000,
-        timerProgressBar: true,
+        title: '✅ Download iniciado!',
+        icon: 'success',
+        timer: 1500,
         showConfirmButton: false
-      }).then(() => {
-        Swal.fire({
-          title: '📚 Todos os lançamentos',
-          text: 'Você será redirecionado para a página completa de lançamentos (demo)',
-          icon: 'info',
-          background: '#fcfaf7',
-          color: '#1f3133',
-          confirmButtonColor: '#b78c5a'
-        });
       });
-    }
-  </script>
+
+    }, 1000);
+  }
+});
+
+
+/* =========================
+   NEWSLETTER
+========================= */
+function inscreverNewsletter() {
+  const email = document.getElementById('newsletterEmail').value;
+
+  if(!email || !email.includes('@')) {
+    Swal.fire('Atenção', 'Insira um e-mail válido.', 'warning');
+    return;
+  }
+
+  Swal.fire({
+    title: '✉️ Inscrição confirmada!',
+    html: `<p><b>${email}</b></p>`,
+    icon: 'success',
+    confirmButtonColor: '#b78c5a'
+  });
+}
+
+
+/* =========================
+   VER MAIS
+========================= */
+function verMaisLancamentos() {
+  Swal.fire({
+    title: '🔍 Carregando...',
+    timer: 1500,
+    showConfirmButton: false
+  });
+}
+
+
+/* =========================
+   PRÉ-VENDA
+========================= */
+function confirmarPreVenda() {
+  Swal.fire({
+    title: 'Pré-venda garantida!',
+    text: 'Seu pedido foi registrado com sucesso.',
+    icon: 'success',
+    confirmButtonColor: '#b78c5a'
+  });
+}
+</script>
+
+<footer class="footer">
+  <p><i class="fas fa-book"></i> Parágrafo 42 — Livros que transformam</p>
+  <p><small>&copy; 2025 — Todos os direitos reservados</small></p>
+</footer>
+
 </body>
 </html>

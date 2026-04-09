@@ -9,12 +9,16 @@ return new class extends Migration
     /**
      * Run the migrations.
      */
-    public function up()
+    public function up(): void
     {
-        Schema::create('favoritos', function (Blueprint $table) {
+        Schema::create('ebook', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('user_id');
-            $table->unsignedBigInteger('ebook_id');
+            $table->text('titulo');
+            $table->text('autor');
+            $table->text('genero');
+            $table->text('sinopse');
+            $table->text('texto');
+            $table->bigInteger('user_id');
             $table->timestamps();
         });
     }
@@ -24,6 +28,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        //
+        Schema::dropIfExists('ebook');
     }
 };

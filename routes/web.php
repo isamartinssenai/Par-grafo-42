@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\LivroController;
 use App\Http\Controllers\UsuarioController;
 use App\Http\Controllers\AutorController;
+use App\Http\Controllers\EbookController;
 
 Route::get('/', function () {
     return ['Laravel' => app()->version()];
@@ -43,8 +44,11 @@ Route::get('/dashboard', function () {
     return view('dashboard');
 });
 
-Route::get('/prevendas', [LivroController::class, 'prevendas']);
+Route::get('/ebook', function () {
+    return view('ebook');
+});
 
+Route::get('/prevendas', [EbookController::class, 'prevendas']);
 
 Route::get('/visualiza_livro/{id_livro}',[LivroController::class,'visualiza_livro']);
 Route::get('/alterar_livro/{id_livro}',[LivroController::class,'visualiza_livro']);
@@ -57,5 +61,10 @@ Route::get('/deleta_cadastro/{id_cadastro}',[UsuarioController::class,'deleta_ca
 Route::get('/visualiza_autor/{id_autor}',[AutorController::class,'visualiza_autor']);
 Route::get('/altera_autor/{id_autor}',[AutorController::class,'visualiza_autor']);
 Route::get('/deleta_autor/{id_autor}',[AutorController::class,'deleta_autor']);
+
+Route::get('/visualiza_ebook/{id_ebook}',[EbookController::class,'visualiza_ebook']);
+Route::get('/deleta_ebook/{id_ebook}',[EbookController::class,'deleta_ebook']);
+
+
 require __DIR__.'/auth.php';
 

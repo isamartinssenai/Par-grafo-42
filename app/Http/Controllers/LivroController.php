@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\EbookModel;
 use App\Models\LivroModel;
 use Illuminate\Http\Request;
 use App\Models\Favorito;
@@ -166,7 +167,7 @@ public function dashboard(Request $request)
     $user = $request->usuario;
 
     // 🔥 MUDANÇA AQUI (só isso!)
-    $totalLivros = LivroModel::where('user_id', $user->id)->count();
+    $totalebook = EbookModel::where('user_id', $user->id)->count();
 
     // resto IGUAL
     $favoritos = Favorito::where('user_id', $user->id)->count();
@@ -184,32 +185,10 @@ public function dashboard(Request $request)
     }
 
     return response()->json([
-        'total_livros' => $totalLivros,
+        'total_livros' => $totalebooks,
         'favoritos' => $favoritos,
         'grafico' => $grafico,
     ]);
 }
 
-
-// FAVORITAR
-public function favoritar(Request $request)
-{
-    $user = $request->usuario;
-
-    Favorito::create([
-        'user_id' => $user->id,
-        'livro_id' => $request->livro_id
-    ]);
-
-    return response()->json([
-        'msg' => 'Favoritado com sucesso'
-    ]);
-}
-
-public function prevendas()
-{
-    $livros = LivroModel::all();
-
-    return view('vendas')->with('livros', $livros);
-}
 }

@@ -1,36 +1,28 @@
 $(document).ready(function(){
 
-
     $("#meuid").click(function(){
 
         let token = $.cookie('token');
-        alert(token);
 
-        
         $.ajax({
-            url: "/api/salva_livro",
+            url: "/api/cadastra_ebook",
             method: "POST",
             data: { 
                 
+                titulo: $("#titulo").val(),
                 autor: $("#autor").val(),
-                titulo : $("#titulo").val(),
-                ano_publicacao: $("#ano_publicacao").val(),
-                editora: $("#editora").val(),
-                isbn: $("#isbn").val(),
-               paginas : $("#paginas").val(),
-               preco:$("#preco").val(),
-               genero: $("#genero").val(),
-               token:token
-
+                genero: $("#genero").val(),
+                sinopse: $("#sinopse").val(),
+                texto: $("#texto").val(),
+                token:token
 
             },success: function (res){
                 console.log(res);
                 if(res['erro'] == 'n'){
-                    alert("Livro Cadastrado");
+                    alert("E-book cadastrado!");
                 }else{
                     alert("Erro ao Alterar");
                 }
-
             },
             error: function (xhr) {
 
