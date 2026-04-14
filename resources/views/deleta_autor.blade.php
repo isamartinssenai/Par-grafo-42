@@ -502,15 +502,10 @@
             </a>
           </li>
 
-          <li class="nav-item">
-            <a class="nav-link text-white" href="{{ url('/estante') }}">
-              <i class="fas fa-layer-group me-2"></i>Estante
-            </a>
-          </li>
 
           <li class="nav-item">
-            <a class="nav-link text-white" href="{{ url('/inicio') }}">
-              <i class="fas fa-book-medical me-2"></i>Cadastre seu livro
+            <a class="nav-link text-white" href="{{ url('/ebook') }}">
+              <i class="fas fa-book-medical me-2"></i>Cadastre seu e-book
             </a>
           </li>
 

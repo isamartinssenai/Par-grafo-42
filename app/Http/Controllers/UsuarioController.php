@@ -61,7 +61,7 @@ class UsuarioController extends Controller
             $token = new TokenUser();
             $token->user_id = $usuario->id;
             $data = date(format:"Y-m-d H:i:s");
-            $token->token = md5($request->user_id . $usuario->email . $data);
+            $token->token = md5($usuario->id . $usuario->email . $data);
             $agora = Carbon::now();
             $agora->addDays(7);
             $token->valido_ate = $agora;
@@ -188,6 +188,17 @@ class UsuarioController extends Controller
 
         return response()->json($data, 200);
     }
+
+    public function perfil(Request $request)
+{
+    $usuario = $request->usuario;
+
+    if (!$usuario) {
+        return redirect('/login');
+    }
+
+    return view('perfil')->with('cadastro', $usuario);
+}
 
 }
 

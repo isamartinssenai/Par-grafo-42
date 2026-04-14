@@ -7,7 +7,7 @@
 <style>
     body {
         font-family: Georgia, serif;
-        margin: 70px;
+        margin: 0px;
         font-size: 24px;
         color: #1f2a2b;
         line-height: 1.8;
@@ -15,22 +15,24 @@
 
     /* NUMERO DA PAGINA */
     @page {
-        margin: 70px;
-    }
+    margin: 50px;
+    margin-bottom: 80px; /* aumenta espaço inferior */
+}
 
     .page-number:after {
         content: counter(page);
     }
 
     .rodape {
-        position: fixed;
-        bottom: 20px;
-        left: 0;
-        right: 0;
-        text-align: center;
-        font-size: 14px;
-        color: #888;
-    }
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 60px;
+    text-align: center;
+    font-size: 14px;
+    color: #888;
+}
 
     /* CAPA */
     .capa {
@@ -85,11 +87,20 @@
         text-align: justify;
     }
 
+    .texto p {
+    text-indent: 40px;
+    margin-bottom: 10px; /* opcional, só pra dar um respiro */
+
+    .conteudo {
+    padding-bottom: 100px; /* espaço pro rodapé */
+}
+}
+
 </style>
 </head>
 
 <body>
-
+<div class="conteudo">
 <!-- CAPA -->
 <div class="capa">
     <div class="titulo">{{ $ebook->titulo }}</div>
@@ -121,6 +132,7 @@
 <!-- RODAPÉ -->
 <div class="rodape">
     Página <span class="page-number"></span> · Parágrafo 42
+</div>
 </div>
 
 </body>

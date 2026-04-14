@@ -161,34 +161,4 @@ class LivroController extends Controller
         return response()->json($data, 200);
     }
 
-
-public function dashboard(Request $request)
-{
-    $user = $request->usuario;
-
-    // 🔥 MUDANÇA AQUI (só isso!)
-    $totalebook = EbookModel::where('user_id', $user->id)->count();
-
-    // resto IGUAL
-    $favoritos = Favorito::where('user_id', $user->id)->count();
-
-    $dados = Favorito::selectRaw('MONTH(created_at) as mes, COUNT(*) as total')
-        ->where('user_id', $user->id)
-        ->whereYear('created_at', 2026)
-        ->groupBy('mes')
-        ->pluck('total', 'mes');
-
-    $grafico = [];
-
-    for ($i = 1; $i <= 12; $i++) {
-        $grafico[] = $dados[$i] ?? 0;
-    }
-
-    return response()->json([
-        'total_livros' => $totalebooks,
-        'favoritos' => $favoritos,
-        'grafico' => $grafico,
-    ]);
-}
-
 }

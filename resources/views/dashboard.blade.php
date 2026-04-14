@@ -613,15 +613,10 @@
             </a>
           </li>
 
-          <li class="nav-item">
-            <a class="nav-link text-white" href="{{ url('/estante') }}">
-              <i class="fas fa-layer-group me-2"></i>Estante
-            </a>
-          </li>
 
           <li class="nav-item">
-            <a class="nav-link text-white" href="{{ url('/inicio') }}">
-              <i class="fas fa-book-medical me-2"></i>Cadastre seu livro
+            <a class="nav-link text-white" href="{{ url('/ebook') }}">
+              <i class="fas fa-book-medical me-2"></i>Cadastre seu e-book
             </a>
           </li>
 
@@ -738,7 +733,7 @@ fetch('/api/dashboard?token=' + token)
 
     console.log(data);
 
-    document.querySelectorAll('.stat-number')[0].innerText = data.total_livros;
+    document.querySelectorAll('.stat-number')[0].innerText = data.total_ebooks;
     document.querySelectorAll('.stat-number')[1].innerText = data.favoritos;
 
     const ctx = document.getElementById('salesChart').getContext('2d');

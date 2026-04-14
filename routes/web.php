@@ -5,6 +5,7 @@ use App\Http\Controllers\LivroController;
 use App\Http\Controllers\UsuarioController;
 use App\Http\Controllers\AutorController;
 use App\Http\Controllers\EbookController;
+use App\Http\Middleware\auth_api;
 
 Route::get('/', function () {
     return ['Laravel' => app()->version()];
@@ -31,9 +32,6 @@ Route::get('/login', function () {
     return view('login');
 });
 
-Route::get('/perfil', function () {
-    return view('perfil');
-});
 
 Route::get('/autor', function () {
     return view('autor');
@@ -65,6 +63,7 @@ Route::get('/deleta_autor/{id_autor}',[AutorController::class,'deleta_autor']);
 Route::get('/visualiza_ebook/{id_ebook}',[EbookController::class,'visualiza_ebook']);
 Route::get('/deleta_ebook/{id_ebook}',[EbookController::class,'deleta_ebook']);
 
+Route::get('/perfil', [UsuarioController::class, 'perfil'])->middleware(auth_api::class);
 
 require __DIR__.'/auth.php';
 

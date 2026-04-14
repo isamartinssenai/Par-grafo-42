@@ -6,18 +6,21 @@ use App\Models\Favorito;
 use App\Models\EbookModel;
 use Illuminate\Http\Request;
 use Barryvdh\DomPDF\Facade\Pdf;
+use Illuminate\Support\Facades\DB;
 
 
 class EbookController extends Controller
 {
     public function generate($id){
+    ini_set('memory_limit', '512M'); // ou 1024M se precisar
+    set_time_limit(300); // 5 minutos
+
     $ebook = EbookModel::find($id);
 
     $pdf = Pdf::loadView("pdf.invoice", [
         "ebook" => $ebook
     ])
-    ->setPaper("a4", "portrait")
-    ->setOption(["dpi" => "300"]);
+    ->setPaper("a4", "portrait");
 
     return $pdf->download($ebook->titulo . ".pdf");
 }
@@ -212,19 +215,19 @@ class EbookController extends Controller
 
     public function favoritar(Request $request)
 {
-    $user = auth('api')->user(); // ou seu método de auth
+    $user = $request->usuario; // ✅ CORRETO
 
     if (!$user) {
         return response()->json([
             'erro' => 's',
             'msg' => 'Usuário não autenticado'
-        ], 401);
+        ]);
     }
 
     Favorito::create([
-        'user_id' => $user->id,
-        'ebook_id' => $request->ebook_id
-    ]);
+    'user_id' => $user->id,
+    'livro_id' => $request->ebook_id // 👈 AQUI
+]);
 
     return response()->json([
         'erro' => 'n',
@@ -236,5 +239,33 @@ class EbookController extends Controller
 {
     $ebooks = EbookModel::all();
     return view('vendas')->with('ebooks', $ebooks);
+}
+
+
+public function dashboard(Request $request)
+{
+    $user = $request->usuario;
+
+    $totalEbook = EbookModel::where('user_id', $user->id)->count();
+    $favoritos = Favorito::where('user_id', $user->id)->count();
+
+    // 👇 AGRUPANDO POR MÊS
+    $ebooksPorMes = EbookModel::where('user_id', $user->id)
+        ->select(DB::raw('MONTH(created_at) as mes'), DB::raw('count(*) as total'))
+        ->groupBy('mes')
+        ->pluck('total', 'mes');
+
+    // array com 12 meses zerado
+    $grafico = array_fill(0, 12, 0);
+
+    foreach ($ebooksPorMes as $mes => $total) {
+        $grafico[$mes - 1] = $total;
+    }
+
+    return response()->json([
+        'total_ebooks' => $totalEbook,
+        'favoritos' => $favoritos,
+        'grafico' => $grafico,
+    ]);
 }
 }
