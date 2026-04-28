@@ -12,6 +12,7 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.min.js"></script>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
   <style>
     * {
       margin: 0;
@@ -184,7 +185,7 @@
       border: 2px solid #e2dbd1;
       border-radius: 18px;
       padding: 0.85rem 1.2rem;
-      font-size: 1.1rem; /* antes era 1rem */
+      font-size: 1.1rem;
       font-family: 'Cormorant Garamond', 'Georgia', serif;
       color: #1f2a2b;
       transition: 0.2s;
@@ -371,7 +372,7 @@
       </div>
       <div class="form-group">
         <label><i class="fas fa-tag"></i> Gênero</label>
-        <select id="genero" name="genero"> <!-- ✅ CORRIGIDO: ID "genero" -->
+        <select id="genero" name="genero">
           <option value="fantasia" {{$ebook->genero == 'fantasia' ? 'selected' : '' }}>Fantasia</option>
           <option value="ficcao" {{$ebook->genero == 'ficcao' ? 'selected' : '' }}>Ficção Científica</option>
           <option value="biografia" {{$ebook->genero == 'biografia' ? 'selected' : '' }}>Biografia</option>
@@ -441,13 +442,63 @@
             success: function (res){
                 console.log(res);
                 if(res['erro'] == 'n'){
-                    alert("Perfil Alterado");
-                }else{
-                    alert("Erro ao Alterar");
+                    Swal.fire({
+                        title: '<strong style="font-family: Cormorant Garamond;">E-book alterado!</strong>',
+                        html: `
+                            <div style="font-family: Cormorant Garamond; font-size: 1.1rem;">
+                                Seu e-book foi atualizado com sucesso! 📚<br>
+                                <span style="color:#b78c5a;">Alterações salvas!</span>
+                            </div>
+                        `,
+                        icon: 'success',
+                        background: 'linear-gradient(135deg, #f0e8de, #e7ddd1)',
+                        color: '#1f3133',
+                        confirmButtonText: 'Ir para a página inicial',
+                        confirmButtonColor: '#1f3133',
+                        timer: 3500,
+                        timerProgressBar: true,
+                        showClass: {
+                            popup: 'animate__animated animate__fadeInDown'
+                        },
+                        hideClass: {
+                            popup: 'animate__animated animate__fadeOutUp'
+                        },
+                        customClass: {
+                            popup: 'rounded-4 shadow-lg',
+                            confirmButton: 'px-4 py-2'
+                        }
+                    }).then(() => {
+                        window.location.href = '/home';
+                    });
+                } else {
+                    Swal.fire({
+                        title: 'Erro ao alterar',
+                        text: res['msg'] || 'Ocorreu um erro ao alterar o e-book',
+                        icon: 'error',
+                        background: '#fdf6f0',
+                        color: '#1f3133',
+                        confirmButtonColor: '#b78c5a',
+                        confirmButtonText: 'Tentar novamente',
+                        customClass: {
+                            popup: 'rounded-4'
+                        }
+                    });
                 }
             },
             error: function (xhr) {
                 console.log(xhr.responseText);
+                Swal.fire({
+                    title: 'Erro na requisição',
+                    text: 'Não foi possível conectar ao servidor. Tente novamente mais tarde.',
+                    icon: 'error',
+                    background: '#fdf6f0',
+                    color: '#1f3133',
+                    confirmButtonColor: '#b78c5a',
+                    confirmButtonText: 'OK',
+                    customClass: {
+                        popup: 'rounded-4'
+                    }
+                });
             }
         });
 

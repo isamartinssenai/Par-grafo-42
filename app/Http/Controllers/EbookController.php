@@ -7,13 +7,14 @@ use App\Models\EbookModel;
 use Illuminate\Http\Request;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Support\Facades\DB;
+use App\Job\RenovaCache;
+use Illuminate\Support\Facades\Cache;
 
 
 class EbookController extends Controller
 {
     public function generate($id){
-    ini_set('memory_limit', '512M'); // ou 1024M se precisar
-    set_time_limit(300); // 5 minutos
+    ini_set('memory_limit', '512M'); 
 
     $ebook = EbookModel::find($id);
 
@@ -43,6 +44,8 @@ class EbookController extends Controller
     $ebook->texto = $request->texto;
     $ebook->hash_conteudo = md5($request->texto);
     $ebook->save();
+
+    RenovaCache::dispatch($request->usuario);
 
     return response()->json([
         'erro' => 'n',
@@ -246,26 +249,35 @@ public function dashboard(Request $request)
 {
     $user = $request->usuario;
 
-    $totalEbook = EbookModel::where('user_id', $user->id)->count();
-    $favoritos = Favorito::where('user_id', $user->id)->count();
+    $dash = Cache::rememberForever('dashboard_'.$user->id, function () use ($user) {
 
-    // 👇 AGRUPANDO POR MÊS
-    $ebooksPorMes = EbookModel::where('user_id', $user->id)
-        ->select(DB::raw('MONTH(created_at) as mes'), DB::raw('count(*) as total'))
-        ->groupBy('mes')
-        ->pluck('total', 'mes');
+        $data = [];
 
-    // array com 12 meses zerado
-    $grafico = array_fill(0, 12, 0);
+        $data['totalEbook'] = EbookModel::where('user_id', $user->id)->count();
+        $data['favoritos'] = Favorito::where('user_id', $user->id)->count();
 
-    foreach ($ebooksPorMes as $mes => $total) {
+        $data['ebooksPorMes'] = EbookModel::where('user_id', $user->id)
+            ->select(DB::raw('MONTH(created_at) as mes'), DB::raw('count(*) as total'))
+            ->groupBy('mes')
+            ->pluck('total', 'mes');
+
+        $data['grafico'] = array_fill(0, 12, 0);
+
+        return $data;
+    });
+
+    $grafico = $dash['grafico'];
+
+    foreach ($dash['ebooksPorMes'] as $mes => $total) {
         $grafico[$mes - 1] = $total;
     }
 
     return response()->json([
-        'total_ebooks' => $totalEbook,
-        'favoritos' => $favoritos,
+        'total_ebooks' => $dash['totalEbook'],
+        'favoritos' => $dash['favoritos'],
         'grafico' => $grafico,
     ]);
+
+    
 }
 }
