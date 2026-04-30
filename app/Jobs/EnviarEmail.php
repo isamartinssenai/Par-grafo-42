@@ -2,31 +2,34 @@
 
 namespace App\Jobs;
 
-use Illuminate\Bus\Queueable;
-use Illuminate\Foundation\Bus\Dispatchable;
+use Illuminate\Contracts\Queue\ShouldQueue;
+use Illuminate\Foundation\Queue\Queueable;
 use Illuminate\Support\Facades\Cache;
 use App\Models\EbookModel;
 use App\Models\Favorito;
 use Illuminate\Support\Facades\DB;
 
-class RenovaCache
+class RenovaCache implements ShouldQueue
 {
-    use Dispatchable, Queueable;
+    use Queueable;
 
     protected $user_id;
 
     public function __construct($user)
     {
-        $this->user_id = is_object($user) ? $user->id : $user;
+        $this->user_id = $user->id;
     }
 
     public function handle(): void
     {
         $user_id = $this->user_id;
 
+        // =========================
+        // DASHBOARD (FOREVER)
+        // =========================
         Cache::forget('dashboard_'.$user_id);
 
-        Cache::remember('dashboard_'.$user_id, 60 * 5, function () use ($user_id) {
+        Cache::rememberForever('dashboard_'.$user_id, function () use ($user_id) {
 
             $data = [];
 
@@ -45,17 +48,22 @@ class RenovaCache
             }
 
             $data['grafico'] = $grafico;
-            $data['ebooksPorMes'] = $ebooksPorMes->toArray();
 
             return $data;
         });
 
+        // =========================
+        // EBOOKS DO USUÁRIO (FOREVER)
+        // =========================
         Cache::forget('ebooks_user_'.$user_id);
 
-        Cache::remember('ebooks_user_'.$user_id, 60 * 5, function () use ($user_id) {
-            return EbookModel::where('user_id', $user_id)->get()->toArray();
+        Cache::rememberForever('ebooks_user_'.$user_id, function () use ($user_id) {
+            return EbookModel::where('user_id', $user_id)->get();
         });
 
+        // =========================
+        // TODOS OS EBOOKS (10 min)
+        // =========================
         Cache::forget('todos_ebooks');
 
         Cache::remember('todos_ebooks', now()->addMinutes(10), function () {

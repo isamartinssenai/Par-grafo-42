@@ -11,11 +11,13 @@ use App\Http\Middleware\auth_api;
 Route::get('/exibe_livro/{id}',[LivroController::class,'exibe_livro']);
 
 Route::post('/cadastro_usuario',[UsuarioController::class,'cadastra_usuario']);
-Route::get('/login_novo',[UsuarioController::class,'login']);
+Route::post('/login_novo',[UsuarioController::class,'login']);
 Route::put('/altera_cadastro',[UsuarioController::class,'altera_cadastro']);
 Route::delete('/deleta_cadastro',[UsuarioController::class,'apagar_cadastro']);
 
 Route::get('/ebooks/{id}/pdf', [EbookController::class, 'generate']);
+
+Route::get('/testa_email/{id_usuario}',[UsuarioController::class, 'testa_email']);
 
 Route::middleware(auth_api::class)->group(function(){
 
@@ -23,11 +25,12 @@ Route::middleware(auth_api::class)->group(function(){
   Route::put('/altera_autor',[AutorController::class,'altera_autor']);
   Route::delete('/deleta_autor',[AutorController::class,'apaga_autor']);
   
-  Route::get('/todos_livros',[LivroController::class,'todos_livros']);
+  Route::post('/todos_livros',[LivroController::class,'todos_livros']);
   Route::post('/salva_livro',[LivroController::class,'salva_livro']);  
   Route::put('/altera_livro',[LivroController::class,'altera_livro']);
   Route::delete('/deleta_livro',[LivroController::class,'apagar_livro']);
 
+  Route::post('/todos_ebooks', [EbookController::class, 'todos_ebook']);  
   Route::post('/cadastra_ebook',[EbookController::class,'cadastra_ebook']);
   Route::put('/altera_ebook',[EbookController::class,'altera_ebook']);
   Route::delete('/deleta_ebook',[EbookController::class,'apaga_ebook']);

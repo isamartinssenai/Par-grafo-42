@@ -484,28 +484,6 @@
     </div>
   </div>
 
-  <!-- DEPOIMENTOS DE AUTORES -->
-  <div class="testimonials">
-    <h2 class="section-title" style="color: #1f3133;">O que nossos autores dizem:</h2>
-    <div class="testimonial-grid">
-      <div class="testimonial-card">
-        <i class="fas fa-quote-left"></i>
-        <p class="testimonial-text">"Publiquei meu primeiro livro na Parágrafo 42 e em 3 meses já tive mais de 500 downloads! Gratidão eterna."</p>
-        <div class="testimonial-name">— Marcela Alves</div>
-      </div>
-      <div class="testimonial-card">
-        <i class="fas fa-quote-left"></i>
-        <p class="testimonial-text">"A plataforma é muito fácil de usar e o suporte é incrível. Recomendo para todo escritor independente!"</p>
-        <div class="testimonial-name">— Rafael Mendonça</div>
-      </div>
-      <div class="testimonial-card">
-        <i class="fas fa-quote-left"></i>
-        <p class="testimonial-text">"Finalmente um lugar que valoriza autores iniciantes. Publiquei de graça e já estou escrevendo meu segundo livro."</p>
-        <div class="testimonial-name">— Camila Rios</div>
-      </div>
-    </div>
-  </div>
-
   <!-- BLOCO DESTAQUE COM IMAGEM ORIGINAL -->
   <div style="background: rgba(231, 221, 209, 0.95); margin: 2rem 1.5rem 2rem 1.5rem; padding: 2rem; border-radius: 4rem; display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 2rem; border: 2px solid #b78c5a70; max-width: 1000px; margin-left: auto; margin-right: auto;">
     <div style="max-width: 500px;">

@@ -812,7 +812,6 @@ const swalConfig = {
   cancelButtonColor: '#1f3133'
 };
 
-let currentEbookId = null;
 
 function favoritar(ebookId) {
   let token = $.cookie('token');
@@ -969,8 +968,6 @@ function closeSwal() {
   <p><small>&copy; 2025 Parágrafo 42 — Todos os direitos reservados</small></p>
 </footer>
 
-</body>
-</html>
 
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
@@ -1035,13 +1032,7 @@ function inscreverNewsletter() {
 function confirmarPreVenda() {
   Swal.fire({title: 'Pré-venda garantida!', text: 'Seu pedido foi registrado com sucesso.', icon: 'success', confirmButtonColor: '#b78c5a'});
 }
-</script>
 
-
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-
-<script>
-let currentEbookId = null;
 
 /* =========================
    FAVORITAR
@@ -1182,11 +1173,6 @@ function confirmarPreVenda() {
   });
 }
 </script>
-
-<footer class="footer">
-  <p><i class="fas fa-book"></i> Parágrafo 42 — Livros que transformam</p>
-  <p><small>&copy; 2025 — Todos os direitos reservados</small></p>
-</footer>
 
 </body>
 </html>

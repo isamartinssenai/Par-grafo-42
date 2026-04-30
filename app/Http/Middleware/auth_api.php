@@ -18,10 +18,9 @@ class auth_api
      */
     public function handle(Request $request, Closure $next): Response
 {
-    // 🔥 pega token do HEADER
+
     $tokenHeader = $request->bearerToken();
 
-    // 🔥 fallback: pega do body (caso ainda use)
     $tokenBody = $request->input('token');
 
     $tokenFinal = $tokenHeader ?? $tokenBody;

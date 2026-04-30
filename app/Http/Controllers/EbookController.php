@@ -7,55 +7,57 @@ use App\Models\EbookModel;
 use Illuminate\Http\Request;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Support\Facades\DB;
-use App\Job\RenovaCache;
+use App\Jobs\RenovaCache;
 use Illuminate\Support\Facades\Cache;
-
 
 class EbookController extends Controller
 {
-    public function generate($id){
-    ini_set('memory_limit', '512M'); 
+    public function generate($id)
+    {
+        ini_set('memory_limit', '512M'); 
 
-    $ebook = EbookModel::find($id);
+        $ebook = EbookModel::find($id);
 
-    $pdf = Pdf::loadView("pdf.invoice", [
-        "ebook" => $ebook
-    ])
-    ->setPaper("a4", "portrait");
+        if (!$ebook) {
+            return response()->json(['erro' => 'E-book não encontrado'], 404);
+        }
 
-    return $pdf->download($ebook->titulo . ".pdf");
-}
+        $pdf = Pdf::loadView("pdf.invoice", [
+            "ebook" => $ebook
+        ])->setPaper("a4", "portrait");
 
-    public function update(Request $request, $id)
-{
-    $ebook = EbookModel::find($id);
-
-    if (!$ebook) {
-        return response()->json(['erro' => 'E-book não encontrado'], 404);
+        return $pdf->download($ebook->titulo . ".pdf");
     }
 
-    if ($ebook->hash_conteudo != md5($request->texto)) {
+    public function update(Request $request, $id)
+    {
+        $ebook = EbookModel::find($id);
+
+        if (!$ebook) {
+            return response()->json(['erro' => 'E-book não encontrado'], 404);
+        }
+
+        if ($ebook->hash_conteudo != md5($request->texto)) {
+            return response()->json([
+                'erro' => 's',
+                'msg' => 'O conteúdo foi alterado!'
+            ]);
+        }
+
+        $ebook->texto = $request->texto;
+        $ebook->hash_conteudo = md5($request->texto);
+        $ebook->save();
+
+        RenovaCache::dispatch($request->usuario); // ✅
+
         return response()->json([
-            'erro' => 's',
-            'msg' => 'O conteúdo foi alterado!'
+            'erro' => 'n',
+            'msg' => 'Salvo com sucesso!'
         ]);
     }
 
-    $ebook->texto = $request->texto;
-    $ebook->hash_conteudo = md5($request->texto);
-    $ebook->save();
-
-    RenovaCache::dispatch($request->usuario);
-
-    return response()->json([
-        'erro' => 'n',
-        'msg' => 'Salvo com sucesso!'
-    ]);
-}
-
-
-    public function cadastra_ebook(Request $request){
-        
+    public function cadastra_ebook(Request $request)
+    {
         $request->validate([
             'titulo' => 'required',
             'autor' => 'required',
@@ -66,6 +68,7 @@ class EbookController extends Controller
 
         try {
             $user = $request->usuario;
+
             $ebook = new EbookModel();
             $ebook->titulo = $request->titulo;
             $ebook->autor = $request->autor;
@@ -75,26 +78,25 @@ class EbookController extends Controller
             $ebook->user_id = $user->id;
             $ebook->save();
 
-            $data =[
+            RenovaCache::dispatch($user); // ✅
+
+            return response()->json([
                 'erro' => 'n',
                 'data' => $ebook
-            ];
+            ], 200);
 
-            return response()->json($data,200);
         } catch (\Throwable $th) {
-            throw $th;
-            $date =[
+            return response()->json([
                 'erro' => 's',
-                'data' => 'erro ao se cadastrar'
-            ];
+                'msg' => 'Erro ao cadastrar'
+            ], 500);
         }
-
     }
-
 
     public function altera_ebook(Request $request)
     {
         $request->validate([
+            'id_ebook' => 'required',
             'titulo' => 'required',
             'autor' => 'required',
             'genero' => 'required',
@@ -104,7 +106,13 @@ class EbookController extends Controller
 
         try {
             $usuario = $request->usuario;
+
             $ebook = EbookModel::find($request->id_ebook);
+
+            if (!$ebook) {
+                return response()->json(['erro' => 'E-book não encontrado'], 404);
+            }
+
             $ebook->titulo = $request->titulo;
             $ebook->autor = $request->autor;
             $ebook->genero = $request->genero;
@@ -112,172 +120,170 @@ class EbookController extends Controller
             $ebook->texto = $request->texto;
             $ebook->save();
 
-            $data = [
+            RenovaCache::dispatch($usuario); // ✅
+
+            return response()->json([
                 'erro' => 'n',
                 'ebook' => $ebook,
-            ];
-
-
-            return response()->json($data, 200);
+            ], 200);
 
         } catch (\Throwable $th) {
-            throw $th;
+            return response()->json([
+                'erro' => 's',
+                'msg' => 'Erro ao alterar'
+            ], 500);
         }
-
-    }
-
-        public function exibe_ebook($id)
-    {
-        $usuario = $request->usuario;
-        $ebook = EbookModel::find($id);
-     
-
-        $data = [
-            'erro' => 'n',
-            'ebook' => $ebook,
-        ];
-        
-
-        return response()->json($data, 200);
     }
 
     public function todos_ebook(Request $request)
     {
         $usuario = $request->usuario;
-        $ebookr = EbookModel::get()->all();
-        if ($ebook->user_id == $usuario->user_id){
 
-        $data = [
+        $ebooks = EbookModel::where('user_id', $usuario->id)->get(); // ✅ corrigido
+
+        return response()->json([
             'erro' => 'n',
-            'ebook' => $ebook,
-        ];
-        }
-
-        return response()->json($data, 200);
+            'ebook' => $ebooks,
+        ], 200);
     }
 
     public function visualiza_ebook($id_ebook)
     {
-     
-        $ebook= EbookModel::find($id_ebook);
-      
+        $ebook = EbookModel::find($id_ebook);
 
-        $info = [];
-        $info['ebook'] = $ebook;
-        return view('visualiza_ebook',$info);
-       
-
+        return view('visualiza_ebook', ['ebook' => $ebook]);
     }
 
     public function deleta_ebook($id_ebook)
     {
-     
         $ebook = EbookModel::find($id_ebook);
-       
-        return view('deleta_ebook')->with('ebook', $ebook);
-        
 
+        return view('deleta_ebook')->with('ebook', $ebook);
     }
 
     public function apaga_ebook(Request $request)
-{
-    $request->validate([
-        'id_ebook' => 'required',
-    ]);
+    {
+        $request->validate([
+            'id_ebook' => 'required',
+        ]);
 
-    $usuario = $request->usuario;
-    $ebook = EbookModel::find($request->id_ebook);
+        $usuario = $request->usuario;
+        $ebook = EbookModel::find($request->id_ebook);
 
-    if (!$ebook) {
+        if (!$ebook) {
+            return response()->json([
+                'erro' => 's',
+                'msg' => 'E-book não encontrado!'
+            ]);
+        }
+
+        if ($ebook->user_id != $usuario->id) {
+            return response()->json([
+                'erro' => 's',
+                'msg' => 'Você não tem permissão!'
+            ]);
+        }
+
+        $ebook->delete();
+
+        RenovaCache::dispatch($usuario); // ✅
+
         return response()->json([
-            'erro' => 's',
-            'msg' => 'E-book não encontrado!'
-        ], 200);
-    }
-
-    if ($ebook->user_id != $usuario->id) {
-        return response()->json([
-            'erro' => 's',
-            'msg' => 'Você não tem permissão!'
-        ], 200);
-    }
-
-    $ebook->delete();
-
-    return response()->json([
-        'erro' => 'n',
-        'msg' => 'E-book deletado com sucesso!'
-    ], 200);
-}   
-
-    public function todos_ebooks()
-{
-    $ebooks = EbookModel::all();
-    return view('vendas')->with('ebooks', $ebooks);
-}
-
-    public function favoritar(Request $request)
-{
-    $user = $request->usuario; // ✅ CORRETO
-
-    if (!$user) {
-        return response()->json([
-            'erro' => 's',
-            'msg' => 'Usuário não autenticado'
+            'erro' => 'n',
+            'msg' => 'E-book deletado com sucesso!'
         ]);
     }
 
-    Favorito::create([
-    'user_id' => $user->id,
-    'livro_id' => $request->ebook_id // 👈 AQUI
-]);
-
-    return response()->json([
-        'erro' => 'n',
-        'msg' => 'Favoritado com sucesso'
-    ]);
-}
-
-    public function prevendas()
-{
-    $ebooks = EbookModel::all();
-    return view('vendas')->with('ebooks', $ebooks);
-}
-
-
-public function dashboard(Request $request)
-{
-    $user = $request->usuario;
-
-    $dash = Cache::rememberForever('dashboard_'.$user->id, function () use ($user) {
-
-        $data = [];
-
-        $data['totalEbook'] = EbookModel::where('user_id', $user->id)->count();
-        $data['favoritos'] = Favorito::where('user_id', $user->id)->count();
-
-        $data['ebooksPorMes'] = EbookModel::where('user_id', $user->id)
-            ->select(DB::raw('MONTH(created_at) as mes'), DB::raw('count(*) as total'))
-            ->groupBy('mes')
-            ->pluck('total', 'mes');
-
-        $data['grafico'] = array_fill(0, 12, 0);
-
-        return $data;
-    });
-
-    $grafico = $dash['grafico'];
-
-    foreach ($dash['ebooksPorMes'] as $mes => $total) {
-        $grafico[$mes - 1] = $total;
+    public function todos_ebooks()
+    {
+        $ebooks = EbookModel::all();
+        return view('vendas')->with('ebooks', $ebooks);
     }
 
-    return response()->json([
-        'total_ebooks' => $dash['totalEbook'],
-        'favoritos' => $dash['favoritos'],
-        'grafico' => $grafico,
-    ]);
+    public function favoritar(Request $request)
+    {
+        $user = $request->usuario;
 
+        if (!$user) {
+            return response()->json([
+                'erro' => 's',
+                'msg' => 'Usuário não autenticado'
+            ]);
+        }
+
+        Favorito::create([
+            'user_id' => $user->id,
+            'livro_id' => $request->livro_id ?? $request->ebook_id
+        ]);
+
+        RenovaCache::dispatch($user); // ✅ ESSENCIAL
+
+        return response()->json([
+            'erro' => 'n',
+            'msg' => 'Favoritado com sucesso'
+        ]);
+    }
+
+    public function prevendas()
+    {
+        $ebooks = EbookModel::all();
+        return view('vendas')->with('ebooks', $ebooks);
+    }
+
+    public function dashboard(Request $request)
+    {
+        try {
+            if (!$request->usuario) {
+                return response()->json([
+                    'erro' => 's',
+                    'msg' => 'Usuário não autenticado'
+                ], 401);
+            }
+
+            $user = $request->usuario;
+
+            $dash = Cache::remember('dashboard_'.$user->id, 60 * 5, function () use ($user) {
+
+                $data = [];
+
+                $data['totalEbook'] = EbookModel::where('user_id', $user->id)->count();
+                $data['favoritos'] = Favorito::where('user_id', $user->id)->count();
+
+                $ebooksPorMes = EbookModel::where('user_id', $user->id)
+                    ->select(DB::raw('MONTH(created_at) as mes'), DB::raw('count(*) as total'))
+                    ->groupBy('mes')
+                    ->pluck('total', 'mes');
+
+                $grafico = array_fill(0, 12, 0);
+
+                foreach ($ebooksPorMes as $mes => $total) {
+                    $grafico[$mes - 1] = $total;
+                }
+
+                $data['grafico'] = $grafico;
+                $data['ebooksPorMes'] = $ebooksPorMes->toArray();
+
+                return $data;
+            });
+
+            $grafico = $dash['grafico'] ?? array_fill(0, 12, 0);
+            $ebooksPorMes = $dash['ebooksPorMes'] ?? [];
+
+            foreach ($ebooksPorMes as $mes => $total) {
+                $grafico[$mes - 1] = $total;
+            }
+
+            return response()->json([
+                'total_ebooks' => $dash['totalEbook'] ?? 0,
+                'favoritos' => $dash['favoritos'] ?? 0,
+                'grafico' => $grafico,
+            ]);
+        } catch (\Throwable $th) {
+            return response()->json([
+                'erro' => 's',
+                'msg' => 'Erro ao carregar dashboard: ' . $th->getMessage()
+            ], 500);
+        }
+    }
     
-}
 }
