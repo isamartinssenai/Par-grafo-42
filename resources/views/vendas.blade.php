@@ -659,6 +659,19 @@
         flex-direction: column;
       }
     }
+
+    .card-buttons {
+  display: flex;
+  gap: 0.8rem;
+  justify-content: center;
+  margin-top: 1rem;
+  flex-wrap: wrap; /* permite quebrar linha */
+}
+
+.card-buttons .btn-card {
+  width: 45%; /* força 2 por linha */
+  justify-content: center;
+}
   </style>
 </head>
 <body>
@@ -747,14 +760,23 @@
           <div class="livro-pre-titulo">{{$ebook->titulo}}</div>
           <div class="livro-pre-autor"><i class="fas fa-user"></i> {{$ebook->autor}}</div>
           <div class="card-buttons">
-            <button class="btn-card btn-favoritar" onclick="favoritar({{$ebook->id}})">
-              <i class="fas fa-heart"></i> Favoritar
-            </button>
-            <button class="btn-card btn-sinopse" 
-            onclick='abrirSinopse({{ $ebook->id }}, {!! json_encode($ebook->titulo) !!}, {!! json_encode($ebook->sinopse) !!})'>
-              <i class="fas fa-book-open"></i> Sinopse
-            </button>
-          </div>
+  <button class="btn-card btn-favoritar" onclick="favoritar({{$ebook->id}})">
+    <i class="fas fa-heart"></i> Favoritar
+  </button>
+
+  <button class="btn-card btn-sinopse" 
+  onclick='abrirSinopse({{ $ebook->id }}, {!! json_encode($ebook->titulo) !!}, {!! json_encode($ebook->sinopse) !!})'>
+    <i class="fas fa-book-open"></i> Sinopse
+  </button>
+
+  <button class="btn-card" onclick="abrirEbook({{$ebook->id}})">
+  <i class="fas fa-edit"></i> Alterar
+</button>
+
+<button class="btn-card" onclick="confirmarExclusao({{$ebook->id}})">
+  <i class="fas fa-trash"></i> Excluir
+</button>
+</div>
         </div>
       </div>
       @endforeach
@@ -800,7 +822,13 @@
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
 <script>
-// Configuração global do SweetAlert para usar o estilo customizado
+
+const usuarioLogadoId = {!! auth()->check() ? auth()->user()->id : 'null' !!};
+let currentEbookId = null;
+
+/* =========================
+   CONFIG GLOBAL SWEETALERT
+========================= */
 const swalConfig = {
   customClass: {
     popup: 'custom-swal',
@@ -808,154 +836,199 @@ const swalConfig = {
     cancelButton: 'swal2-cancel'
   },
   buttonsStyling: false,
-  confirmButtonColor: '#b78c5a',
-  cancelButtonColor: '#1f3133'
+  backdrop: `rgba(0,0,0,0.4)`
 };
 
 
-function favoritar(ebookId) {
+/* =========================
+   ABRIR EBOOK (ALTERAR)
+========================= */
+function abrirEbook(id) {
+  Swal.fire({
+    ...swalConfig,
+    title: 'Abrindo e-book 📚',
+    text: 'Carregando conteúdo...',
+    timer: 1200,
+    showConfirmButton: false,
+    didOpen: () => Swal.showLoading()
+  });
+
+  setTimeout(() => {
+    window.location.href = `/visualiza_ebook/${id}`;
+  }, 1200);
+}
+
+
+/* =========================
+   CONFIRMAR EXCLUSÃO (REDIRECT)
+========================= */
+function confirmarExclusao(id) {
+  Swal.fire({
+    ...swalConfig,
+    title: 'Excluir e-book?',
+    text: 'Você será redirecionado para a exclusão.',
+    icon: 'warning',
+    showCancelButton: true,
+    confirmButtonText: 'Sim, excluir',
+    cancelButtonText: 'Cancelar'
+  }).then((result) => {
+    if (result.isConfirmed) {
+
+      Swal.fire({
+        ...swalConfig,
+        title: 'Redirecionando...',
+        text: 'Aguarde...',
+        timer: 1000,
+        showConfirmButton: false,
+        didOpen: () => Swal.showLoading()
+      });
+
+      setTimeout(() => {
+        window.location.href = `/deleta_ebook/${id}`;
+      }, 1000);
+    }
+  });
+}
+
+
+/* =========================
+   FAVORITAR
+========================= */
+function favoritar(id) {
+
   let token = $.cookie('token');
+
   fetch('/api/favoritar', {
     method: 'POST',
-    headers: {'Content-Type': 'application/json'},
-    body: JSON.stringify({ebook_id: ebookId, token: token})
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      ebook_id: id,
+      token: token
+    })
   })
   .then(res => res.json())
   .then(data => {
-    if(data.erro === 's'){
+
+    if (data.erro === 's') {
       Swal.fire({
         ...swalConfig,
-        title: '❌ Erro',
+        title: 'Erro 😢',
         text: data.msg,
-        icon: 'error',
-        confirmButtonText: 'OK'
+        icon: 'error'
       });
     } else {
       Swal.fire({
         ...swalConfig,
-        title: '❤️ Livro Favoritado!',
-        html: `<p style="font-size:1rem;">O livro foi adicionado aos seus favoritos com sucesso!</p><i class="fas fa-heart" style="color:#b78c5a; font-size:3rem; margin-top:0.5rem;"></i>`,
+        title: 'Favoritado ❤️',
+        text: 'Livro salvo nos favoritos!',
         icon: 'success',
-        confirmButtonText: '<i class="fas fa-check"></i> Continuar',
-        timer: 3000,
-        timerProgressBar: true
+        timer: 1500,
+        showConfirmButton: false
       });
     }
+
+  })
+  .catch(() => {
+    Swal.fire({
+      ...swalConfig,
+      title: 'Erro de conexão',
+      text: 'Não foi possível conectar ao servidor.',
+      icon: 'error'
+    });
   });
 }
 
-function abrirSinopse(ebookId, titulo, sinopse) {
-  currentEbookId = ebookId;
-  const modalBody = document.getElementById('sinopseModalBody');
-  modalBody.innerHTML = `
+
+/* =========================
+   SINOPSE
+========================= */
+function abrirSinopse(id, titulo, sinopse) {
+
+  currentEbookId = id;
+
+  document.getElementById('sinopseModalBody').innerHTML = `
     <div class="sinopse-container">
-      <h4 class="sinopse-titulo"><i class="fas fa-quote-left" style="color:#b78c5a;"></i> ${titulo}</h4>
+      <h4 class="sinopse-titulo">${titulo}</h4>
       <div class="sinopse-box">
-        <p>${sinopse || 'Sinopse não disponível para este livro.'}</p>
+        <p>${sinopse || 'Sem sinopse.'}</p>
       </div>
     </div>
   `;
-  const modal = new bootstrap.Modal(document.getElementById('sinopseModal'));
-  modal.show();
+
+  new bootstrap.Modal(document.getElementById('sinopseModal')).show();
 }
 
+
+/* =========================
+   DOWNLOAD PDF
+========================= */
 document.addEventListener('click', function(e) {
+
   if (e.target.closest('#baixarPdfBtn')) {
+
     if (!currentEbookId) {
       Swal.fire({
         ...swalConfig,
-        title: '❌ Erro',
+        title: 'Ops...',
         text: 'Nenhum livro selecionado.',
-        icon: 'error',
-        confirmButtonText: 'OK'
+        icon: 'error'
       });
       return;
     }
-    
+
     Swal.fire({
       ...swalConfig,
-      title: '📄 Gerando PDF...',
-      html: '<div class="spinner-border text-warning" role="status" style="margin:1rem 0;"><span class="visually-hidden">Loading...</span></div><p>Aguarde um instante</p>',
+      title: 'Gerando PDF 📄',
+      text: 'Isso pode levar alguns segundos...',
       allowOutsideClick: false,
       showConfirmButton: false,
-      didOpen: () => {
-        Swal.showLoading();
-      }
+      didOpen: () => Swal.showLoading()
     });
-    
+
     setTimeout(() => {
       window.open(`/api/ebooks/${currentEbookId}/pdf`, '_blank');
+
       Swal.fire({
         ...swalConfig,
-        title: '✅ Download iniciado!',
-        html: '<i class="fas fa-file-pdf" style="color:#b78c5a; font-size:3rem; margin:0.5rem 0;"></i><p>Seu PDF está sendo baixado</p>',
+        title: 'Download iniciado 🚀',
         icon: 'success',
-        timer: 2000,
-        timerProgressBar: true,
+        timer: 1500,
         showConfirmButton: false
       });
-    }, 1000);
+
+    }, 1200);
   }
+
 });
 
+
+/* =========================
+   NEWSLETTER
+========================= */
 function inscreverNewsletter() {
-  const email = document.getElementById('newsletterEmail').value;
-  if(!email || !email.includes('@')) {
+
+  let email = document.getElementById('newsletterEmail').value;
+
+  if (!email) {
     Swal.fire({
       ...swalConfig,
-      title: '⚠️ Atenção',
-      text: 'Por favor, insira um e-mail válido.',
-      icon: 'warning',
-      confirmButtonText: '<i class="fas fa-edit"></i> Corrigir'
+      title: 'Campo vazio',
+      text: 'Digite um e-mail válido.',
+      icon: 'warning'
     });
     return;
   }
-  
+
   Swal.fire({
     ...swalConfig,
-    title: '✉️ Inscrição confirmada!',
-    html: `<p><b>${email}</b></p><p style="margin-top:0.5rem;">Você receberá novidades e ofertas exclusivas!</p><i class="fas fa-envelope-open-text" style="color:#b78c5a; font-size:3rem; margin-top:0.5rem;"></i>`,
-    icon: 'success',
-    confirmButtonText: '<i class="fas fa-check"></i> Obrigado!',
-    timer: 4000,
-    timerProgressBar: true
+    title: 'Inscrito com sucesso! 🎉',
+    text: 'Você receberá novidades em breve.',
+    icon: 'success'
   });
-  
+
   document.getElementById('newsletterEmail').value = '';
 }
 
-function confirmarPreVenda() {
-  Swal.fire({
-    ...swalConfig,
-    title: '🎉 Pré-venda garantida!',
-    html: `<p>Seu pedido foi registrado com sucesso.</p><p style="color:#b78c5a; font-weight:bold;">Você receberá um e-mail de confirmação</p><i class="fas fa-check-circle" style="color:#b78c5a; font-size:3rem; margin-top:0.5rem;"></i>`,
-    icon: 'success',
-    confirmButtonText: '<i class="fas fa-shopping-cart"></i> Continuar comprando',
-    backdrop: `
-      rgba(31,49,51,0.8)
-      url("/images/books-pattern.png")
-      left top
-      no-repeat
-    `
-  });
-}
-
-// Função para loading genérico (caso precise)
-function showLoading() {
-  Swal.fire({
-    ...swalConfig,
-    title: 'Carregando...',
-    allowOutsideClick: false,
-    showConfirmButton: false,
-    didOpen: () => {
-      Swal.showLoading();
-    }
-  });
-}
-
-function closeSwal() {
-  Swal.close();
-}
 </script>
 
 <footer class="footer">
@@ -967,212 +1040,5 @@ function closeSwal() {
   </div>
   <p><small>&copy; 2025 Parágrafo 42 — Todos os direitos reservados</small></p>
 </footer>
-
-
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-
-<script>
-let currentEbookId = null;
-
-function favoritar(ebookId) {
-  let token = $.cookie('token');
-  fetch('/api/favoritar', {
-    method: 'POST',
-    headers: {'Content-Type': 'application/json'},
-    body: JSON.stringify({ebook_id: ebookId, token: token})
-  })
-  .then(res => res.json())
-  .then(data => {
-    if(data.erro === 's'){
-      Swal.fire('Erro', data.msg, 'error');
-    } else {
-      Swal.fire('❤️ Favoritado!', 'Livro adicionado aos favoritos!', 'success');
-    }
-  });
-}
-
-function abrirSinopse(ebookId, titulo, sinopse) {
-  currentEbookId = ebookId;
-  const modalBody = document.getElementById('sinopseModalBody');
-  modalBody.innerHTML = `
-    <div class="sinopse-container">
-      <h4 class="sinopse-titulo"><i class="fas fa-quote-left" style="color:#b78c5a;"></i> ${titulo}</h4>
-      <div class="sinopse-box">
-        <p>${sinopse || 'Sinopse não disponível para este livro.'}</p>
-      </div>
-    </div>
-  `;
-  const modal = new bootstrap.Modal(document.getElementById('sinopseModal'));
-  modal.show();
-}
-
-document.addEventListener('click', function(e) {
-  if (e.target.closest('#baixarPdfBtn')) {
-    if (!currentEbookId) {
-      Swal.fire('Erro', 'Nenhum livro selecionado.', 'error');
-      return;
-    }
-    Swal.fire({title: '📄 Gerando PDF...', text: 'Aguarde um instante', allowOutsideClick: false, didOpen: () => { Swal.showLoading(); }});
-    setTimeout(() => {
-      window.open(`/api/ebooks/${currentEbookId}/pdf`, '_blank');
-      Swal.fire({title: '✅ Download iniciado!', icon: 'success', timer: 1500, showConfirmButton: false});
-    }, 1000);
-  }
-});
-
-function inscreverNewsletter() {
-  const email = document.getElementById('newsletterEmail').value;
-  if(!email || !email.includes('@')) {
-    Swal.fire('Atenção', 'Insira um e-mail válido.', 'warning');
-    return;
-  }
-  Swal.fire({title: '✉️ Inscrição confirmada!', html: `<p><b>${email}</b></p>`, icon: 'success', confirmButtonColor: '#b78c5a'});
-}
-
-function confirmarPreVenda() {
-  Swal.fire({title: 'Pré-venda garantida!', text: 'Seu pedido foi registrado com sucesso.', icon: 'success', confirmButtonColor: '#b78c5a'});
-}
-
-
-/* =========================
-   FAVORITAR
-========================= */
-function favoritar(ebookId) {
-  let token = $.cookie('token');
-
-  fetch('/api/favoritar', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify({
-      ebook_id: ebookId,
-      token: token // 👈 ESSENCIAL
-    })
-  })
-  .then(res => res.json())
-  .then(data => {
-    console.log(data);
-
-    if(data.erro === 's'){
-      Swal.fire('Erro', data.msg, 'error');
-    } else {
-      Swal.fire('❤️ Favoritado!', 'Livro adicionado!', 'success');
-    }
-  });
-}
-
-
-/* =========================
-   ABRIR SINOPSE
-========================= */
-function abrirSinopse(ebookId, titulo, sinopse) {
-  currentEbookId = ebookId;
-
-  const modalBody = document.getElementById('sinopseModalBody');
-
-  modalBody.innerHTML = `
-    <div class="sinopse-container">
-
-      <h4 class="sinopse-titulo">
-        ${titulo}
-      </h4>
-
-      <div class="sinopse-box">
-        <p>
-          ${sinopse || 'Sinopse não disponível para este livro.'}
-        </p>
-      </div>
-
-    </div>
-  `;
-
-  const modal = new bootstrap.Modal(document.getElementById('sinopseModal'));
-  modal.show();
-}
-
-
-/* =========================
-   DOWNLOAD PDF (CORRIGIDO)
-========================= */
-document.addEventListener('click', function(e) {
-  if (e.target.closest('#baixarPdfBtn')) {
-
-    if (!currentEbookId) {
-      Swal.fire('Erro', 'Nenhum livro selecionado.', 'error');
-      return;
-    }
-
-    // feedback visual
-    Swal.fire({
-      title: '📄 Gerando PDF...',
-      text: 'Aguarde um instante',
-      allowOutsideClick: false,
-      didOpen: () => {
-        Swal.showLoading();
-      }
-    });
-
-    // abre o download
-    setTimeout(() => {
-      window.open(`/api/ebooks/${currentEbookId}/pdf`, '_blank');
-
-      Swal.fire({
-        title: '✅ Download iniciado!',
-        icon: 'success',
-        timer: 1500,
-        showConfirmButton: false
-      });
-
-    }, 1000);
-  }
-});
-
-
-/* =========================
-   NEWSLETTER
-========================= */
-function inscreverNewsletter() {
-  const email = document.getElementById('newsletterEmail').value;
-
-  if(!email || !email.includes('@')) {
-    Swal.fire('Atenção', 'Insira um e-mail válido.', 'warning');
-    return;
-  }
-
-  Swal.fire({
-    title: '✉️ Inscrição confirmada!',
-    html: `<p><b>${email}</b></p>`,
-    icon: 'success',
-    confirmButtonColor: '#b78c5a'
-  });
-}
-
-
-/* =========================
-   VER MAIS
-========================= */
-function verMaisLancamentos() {
-  Swal.fire({
-    title: '🔍 Carregando...',
-    timer: 1500,
-    showConfirmButton: false
-  });
-}
-
-
-/* =========================
-   PRÉ-VENDA
-========================= */
-function confirmarPreVenda() {
-  Swal.fire({
-    title: 'Pré-venda garantida!',
-    text: 'Seu pedido foi registrado com sucesso.',
-    icon: 'success',
-    confirmButtonColor: '#b78c5a'
-  });
-}
-</script>
-
 </body>
 </html>

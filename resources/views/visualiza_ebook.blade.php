@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Parágrafo 42 · Publique seu E-book</title>
+  <title>Parágrafo 42 · Altere seu E-book</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -14,6 +14,94 @@
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
   <style>
+
+    /* SWEET ALERT PADRÃO PARÁGRAFO 42 */
+
+.swal2-popup {
+  font-family: 'Cormorant Garamond', serif;
+  border-radius: 24px !important;
+  border: 2px solid #b78c5a !important;
+  background: linear-gradient(135deg, #f0e8de, #e7ddd1) !important;
+  box-shadow: 0 25px 40px -10px rgba(31, 49, 51, 0.6) !important;
+  padding: 2rem !important;
+}
+
+/* Título */
+.swal2-title {
+  font-size: 2rem !important;
+  font-weight: 600 !important;
+  color: #1f3133 !important;
+}
+
+/* Texto */
+.swal2-html-container {
+  font-size: 1.15rem !important;
+  color: #3f4e4f !important;
+}
+
+/* Botões base */
+.swal2-actions {
+  gap: 10px;
+}
+
+.swal2-confirm,
+.swal2-cancel {
+  border-radius: 40px !important;
+  padding: 0.6rem 1.6rem !important;
+  font-weight: 600 !important;
+  font-size: 1rem !important;
+  transition: 0.25s ease !important;
+  border: 2px solid #b78c5a !important;
+}
+
+/* Confirm */
+.swal2-confirm {
+  background: #1f3133 !important;
+  color: #fff !important;
+}
+
+.swal2-confirm:hover {
+  background: #2a4245 !important;
+  transform: scale(1.05);
+}
+
+/* Cancel */
+.swal2-cancel {
+  background: #8b3a3a !important;
+  color: #fff !important;
+}
+
+.swal2-cancel:hover {
+  background: #a54545 !important;
+  transform: scale(1.05);
+}
+
+/* Ícones */
+.swal2-icon {
+  border-width: 3px !important;
+}
+
+.swal2-icon.swal2-success {
+  border-color: #b78c5a !important;
+}
+
+.swal2-icon.swal2-error {
+  border-color: #8b3a3a !important;
+}
+
+.swal2-icon.swal2-warning {
+  border-color: #b78c5a !important;
+}
+
+/* Loading */
+.swal2-loader {
+  border-color: #b78c5a transparent #b78c5a transparent !important;
+}
+
+/* Progress bar */
+.swal2-timer-progress-bar {
+  background: #b78c5a !important;
+}
     * {
       margin: 0;
       padding: 0;
@@ -23,7 +111,7 @@
     body {
       padding-top: 80px;
       font-family: 'Cormorant Garamond', 'Georgia', serif;
-      background-image: url('chat.png');
+      background-image: url('{{ asset("chat.png") }}');
       background-size: cover;
       background-attachment: fixed;
       color: #1e2b2c;
@@ -353,7 +441,7 @@
   
     <input type="hidden" id="id_ebook" value="{{$ebook->id}}">
   <div class="header">
-    <h1><i class="fas fa-feather-alt"></i> Publique seu E-book</h1>
+    <h1><i class="fas fa-feather-alt"></i> Altere seu E-book</h1>
   </div>
 
   <!-- ÁREA DE PUBLICAÇÃO (FORMULÁRIO) -->
@@ -419,87 +507,137 @@
 <script>
   $(document).ready(function(){
 
-    $("#meuid").click(function(){
+    $("#meuid").click(function(e){
+        e.preventDefault();
 
         let token = $.cookie('token');
 
-        console.log(token);
+        const SwalPadrao = Swal.mixin({
+    background: 'linear-gradient(135deg, #f0e8de, #e7ddd1)',
+    color: '#1f3133',
+    customClass: {
+        popup: 'rounded-4 shadow-lg',
+        confirmButton: 'px-4 py-2',
+        cancelButton: 'px-4 py-2'
+    },
+    buttonsStyling: false
+});
 
-        $.ajax({
-            url: "/api/altera_ebook",
-            method: "PUT",
-            headers: {
-                'Authorization': 'Bearer ' + token
-            },
-            data: { 
-                id_ebook:$("#id_ebook").val(),
-                titulo: $("#titulo").val(),
-                autor: $("#autor").val(),
-                genero: $("#genero").val(),
-                sinopse: $("#sinopse").val(),
-                texto: $("#texto").val()
-            },
-            success: function (res){
-                console.log(res);
-                if(res['erro'] == 'n'){
-                    Swal.fire({
-                        title: '<strong style="font-family: Cormorant Garamond;">E-book alterado!</strong>',
-                        html: `
-                            <div style="font-family: Cormorant Garamond; font-size: 1.1rem;">
-                                Seu e-book foi atualizado com sucesso! 📚<br>
-                                <span style="color:#b78c5a;">Alterações salvas!</span>
-                            </div>
-                        `,
-                        icon: 'success',
-                        background: 'linear-gradient(135deg, #f0e8de, #e7ddd1)',
-                        color: '#1f3133',
-                        confirmButtonText: 'Ir para a página inicial',
-                        confirmButtonColor: '#1f3133',
-                        timer: 3500,
-                        timerProgressBar: true,
-                        showClass: {
-                            popup: 'animate__animated animate__fadeInDown'
-                        },
-                        hideClass: {
-                            popup: 'animate__animated animate__fadeOutUp'
-                        },
-                        customClass: {
-                            popup: 'rounded-4 shadow-lg',
-                            confirmButton: 'px-4 py-2'
-                        }
-                    }).then(() => {
-                        window.location.href = '/home';
-                    });
-                } else {
-                    Swal.fire({
-                        title: 'Erro ao alterar',
-                        text: res['msg'] || 'Ocorreu um erro ao alterar o e-book',
-                        icon: 'error',
-                        background: '#fdf6f0',
-                        color: '#1f3133',
-                        confirmButtonColor: '#b78c5a',
-                        confirmButtonText: 'Tentar novamente',
-                        customClass: {
-                            popup: 'rounded-4'
-                        }
-                    });
-                }
-            },
-            error: function (xhr) {
-                console.log(xhr.responseText);
-                Swal.fire({
-                    title: 'Erro na requisição',
-                    text: 'Não foi possível conectar ao servidor. Tente novamente mais tarde.',
-                    icon: 'error',
-                    background: '#fdf6f0',
-                    color: '#1f3133',
-                    confirmButtonColor: '#b78c5a',
-                    confirmButtonText: 'OK',
+        // CONFIRMAÇÃO BONITA
+        SwalPadrao.fire({
+            title: '<strong style="font-family: Cormorant Garamond;">Salvar alterações?</strong>',
+            html: `
+                <div style="font-family: Cormorant Garamond; font-size: 1.1rem;">
+                    Você está alterando o e-book <strong>"${$("#titulo").val()}"</strong><br>
+                    <span style="color:#b78c5a;">Deseja continuar?</span>
+                </div>
+            `,
+            icon: 'question',
+            background: 'linear-gradient(135deg, #f0e8de, #e7ddd1)',
+            color: '#1f3133',
+            showCancelButton: true,
+            confirmButtonText: 'Sim, salvar!',
+            cancelButtonText: 'Cancelar',
+            confirmButtonColor: '#1f3133',
+            cancelButtonColor: '#8b3a3a',
+            reverseButtons: true,
+            customClass: {
+                popup: 'rounded-4 shadow-lg',
+                confirmButton: 'px-4 py-2',
+                cancelButton: 'px-4 py-2'
+            }
+        }).then((result) => {
+
+            if(result.isConfirmed){
+
+                // LOADING BONITO
+                SwalPadrao.fire({
+                    title: 'Salvando...',
+                    html: 'Aplicando alterações no e-book',
+                    timer: 2000,
+                    timerProgressBar: true,
+                    didOpen: () => {
+                        Swal.showLoading();
+                    },
+                    background: 'linear-gradient(135deg, #f0e8de, #e7ddd1)',
                     customClass: {
                         popup: 'rounded-4'
                     }
                 });
+
+                $.ajax({
+                    url: "/api/altera_ebook",
+                    method: "PUT",
+                    headers: {
+                        'Authorization': 'Bearer ' + token
+                    },
+                    data: { 
+                        id_ebook: $("#id_ebook").val(),
+                        titulo: $("#titulo").val(),
+                        autor: $("#autor").val(),
+                        genero: $("#genero").val(),
+                        sinopse: $("#sinopse").val(),
+                        texto: $("#texto").val()
+                    },
+                    success: function (res){
+
+                        if(res['erro'] == 'n'){
+                            SwalPadrao.fire({
+                                title: '<strong style="font-family: Cormorant Garamond;">E-book atualizado!</strong>',
+                                html: `
+                                    <div style="font-family: Cormorant Garamond; font-size: 1.1rem;">
+                                        Alterações salvas com sucesso 📚<br>
+                                        <span style="color:#b78c5a;">Tudo certo!</span>
+                                    </div>
+                                `,
+                                icon: 'success',
+                                background: 'linear-gradient(135deg, #f0e8de, #e7ddd1)',
+                                color: '#1f3133',
+                                confirmButtonText: 'Voltar ao início',
+                                confirmButtonColor: '#1f3133',
+                                timer: 3500,
+                                timerProgressBar: true,
+                                customClass: {
+                                    popup: 'rounded-4 shadow-lg',
+                                    confirmButton: 'px-4 py-2'
+                                }
+                            }).then(() => {
+                                window.location.href = '/home';
+                            });
+
+                        } else {
+                            SwalPadrao.fire({
+                                title: 'Erro ao alterar',
+                                text: res['msg'] || 'Não foi possível salvar as alterações',
+                                icon: 'error',
+                                background: '#fdf6f0',
+                                color: '#1f3133',
+                                confirmButtonColor: '#b78c5a',
+                                confirmButtonText: 'Tentar novamente',
+                                customClass: {
+                                    popup: 'rounded-4'
+                                }
+                            });
+                        }
+                    },
+                    error: function () {
+                        Swal.fire({
+                            title: 'Erro na requisição',
+                            text: 'Servidor não respondeu',
+                            icon: 'error',
+                            background: '#fdf6f0',
+                            color: '#1f3133',
+                            confirmButtonColor: '#b78c5a',
+                            confirmButtonText: 'OK',
+                            customClass: {
+                                popup: 'rounded-4'
+                            }
+                        });
+                    }
+                });
+
             }
+
         });
 
     });

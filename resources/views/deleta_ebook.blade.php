@@ -14,6 +14,50 @@
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
   <style>
+    .custom-swal {
+  font-family: 'Cormorant Garamond', 'Georgia', serif;
+  border-radius: 2rem !important;
+  background: linear-gradient(145deg, #fcfaf7, #f5efe8) !important;
+  border: 3px solid #b78c5a !important;
+  box-shadow: 0 25px 50px rgba(0, 0, 0, 0.2) !important;
+}
+
+/* BOTÕES SWEET ALERT BONITOS */
+.custom-swal .swal2-confirm {
+  background: linear-gradient(135deg, #b78c5a, #9a7348) !important;
+  color: #fff !important;
+  border: none !important;
+  border-radius: 50px !important;
+  padding: 0.7rem 2rem !important;
+  font-weight: 600 !important;
+  letter-spacing: 0.5px;
+  transition: all 0.3s ease !important;
+  box-shadow: 0 5px 15px rgba(183, 140, 90, 0.3);
+}
+
+.custom-swal .swal2-confirm:hover {
+  transform: translateY(-2px) scale(1.03);
+  background: linear-gradient(135deg, #c49a6a, #b78c5a) !important;
+  box-shadow: 0 8px 25px rgba(183, 140, 90, 0.4);
+}
+
+/* BOTÃO CANCELAR */
+.custom-swal .swal2-cancel {
+  background: transparent !important;
+  border: 2px solid #b78c5a !important;
+  color: #1f3133 !important;
+  border-radius: 50px !important;
+  padding: 0.7rem 2rem !important;
+  font-weight: 600 !important;
+  transition: all 0.3s ease !important;
+}
+
+.custom-swal .swal2-cancel:hover {
+  background: #b78c5a !important;
+  color: #fff !important;
+  transform: scale(1.03);
+}
+
     * {
       margin: 0;
       padding: 0;
@@ -23,7 +67,7 @@
     body {
       padding-top: 80px;
       font-family: 'Cormorant Garamond', 'Georgia', serif;
-      background-image: url('chat.png');
+      background-image: url('{{ asset("chat.png") }}');
       background-size: cover;
       background-attachment: fixed;
       color: #1e2b2c;
@@ -425,51 +469,58 @@
 <script>
   $(document).ready(function(){
 
+    /* =========================
+       CONFIG GLOBAL SWEET ALERT
+    ========================= */
+    const swalConfig = {
+      customClass: {
+        popup: 'custom-swal',
+        confirmButton: 'swal2-confirm',
+        cancelButton: 'swal2-cancel'
+      },
+      buttonsStyling: false
+    };
+
     $("#meuid").click(function(){
 
-        // Primeiro, pede confirmação antes de deletar
+        let titulo = $("#titulo").val();
+
+        /* =========================
+           CONFIRMAÇÃO
+        ========================= */
         Swal.fire({
-            title: '<strong style="font-family: Cormorant Garamond;">Tem certeza?</strong>',
+            ...swalConfig,
+            title: '⚠️ Tem certeza?',
             html: `
-                <div style="font-family: Cormorant Garamond; font-size: 1.1rem;">
-                    Você está prestes a deletar <strong>"${$("#titulo").val()}"</strong><br>
-                    <span style="color:#b78c5a;">Esta ação não pode ser desfeita!</span>
-                </div>
+              <div style="font-size:1.05rem;">
+                Você está prestes a excluir:<br><br>
+                <strong style="color:#b78c5a;">"${titulo}"</strong><br><br>
+                Essa ação é <b>irreversível</b>.
+              </div>
             `,
             icon: 'warning',
-            background: 'linear-gradient(135deg, #f0e8de, #e7ddd1)',
-            color: '#1f3133',
             showCancelButton: true,
-            confirmButtonText: 'Sim, deletar!',
+            confirmButtonText: 'Sim, excluir',
             cancelButtonText: 'Cancelar',
-            confirmButtonColor: '#8b3a3a',
-            cancelButtonColor: '#1f3133',
-            reverseButtons: true,
-            customClass: {
-                popup: 'rounded-4 shadow-lg',
-                confirmButton: 'px-4 py-2',
-                cancelButton: 'px-4 py-2'
-            }
+            reverseButtons: true
         }).then((result) => {
+
             if (result.isConfirmed) {
-                // Mostra loading enquanto processa
+
+                /* =========================
+                   LOADING BONITO
+                ========================= */
                 Swal.fire({
+                    ...swalConfig,
                     title: 'Deletando...',
-                    html: 'Aguarde um momento',
-                    timer: 2000,
-                    timerProgressBar: true,
+                    text: 'Removendo seu e-book 📚',
+                    allowOutsideClick: false,
                     didOpen: () => {
                         Swal.showLoading();
-                    },
-                    background: 'linear-gradient(135deg, #f0e8de, #e7ddd1)',
-                    customClass: {
-                        popup: 'rounded-4'
                     }
                 });
 
                 let token = $.cookie('token');
-
-                console.log(token);
 
                 $.ajax({
                     url: "/api/deleta_ebook",
@@ -480,69 +531,60 @@
                     data: { 
                         id_ebook: $("#id_ebook").val(),
                     },
+
                     success: function (res) {
-                        console.log(res);
-                        
+
                         if(res['erro'] == 'n'){
+
+                            /* =========================
+                               SUCESSO
+                            ========================= */
                             Swal.fire({
-                                title: '<strong style="font-family: Cormorant Garamond;">E-book deletado!</strong>',
+                                ...swalConfig,
+                                title: '✅ E-book deletado!',
                                 html: `
-                                    <div style="font-family: Cormorant Garamond; font-size: 1.1rem;">
-                                        O e-book foi removido com sucesso! 📚<br>
-                                        <span style="color:#b78c5a;">Até breve!</span>
-                                    </div>
+                                  <div>
+                                    Seu e-book foi removido com sucesso.<br>
+                                    <span style="color:#b78c5a;">Você será redirecionado...</span>
+                                  </div>
                                 `,
                                 icon: 'success',
-                                background: 'linear-gradient(135deg, #f0e8de, #e7ddd1)',
-                                color: '#1f3133',
-                                confirmButtonText: 'Ir para a página inicial',
-                                confirmButtonColor: '#1f3133',
-                                timer: 3500,
-                                timerProgressBar: true,
-                                showClass: {
-                                    popup: 'animate__animated animate__fadeInDown'
-                                },
-                                hideClass: {
-                                    popup: 'animate__animated animate__fadeOutUp'
-                                },
-                                customClass: {
-                                    popup: 'rounded-4 shadow-lg',
-                                    confirmButton: 'px-4 py-2'
-                                }
+                                timer: 2500,
+                                showConfirmButton: false
                             }).then(() => {
                                 window.location.href = '/home';
                             });
+
                         } else {
+
+                            /* =========================
+                               ERRO BACKEND
+                            ========================= */
                             Swal.fire({
+                                ...swalConfig,
                                 title: 'Erro ao deletar',
-                                text: res['msg'] || 'Ocorreu um erro ao deletar o e-book',
-                                icon: 'error',
-                                background: '#fdf6f0',
-                                color: '#1f3133',
-                                confirmButtonColor: '#b78c5a',
-                                confirmButtonText: 'Tentar novamente',
-                                customClass: {
-                                    popup: 'rounded-4'
-                                }
+                                text: res['msg'] || 'Algo deu errado.',
+                                icon: 'error'
                             });
+
                         }
                     },
-                    error: function (xhr) {
-                        console.log(xhr.responseText);
+
+                    error: function () {
+
+                        /* =========================
+                           ERRO SERVIDOR
+                        ========================= */
                         Swal.fire({
-                            title: 'Erro na requisição',
-                            text: 'Não foi possível conectar ao servidor. Tente novamente mais tarde.',
-                            icon: 'error',
-                            background: '#fdf6f0',
-                            color: '#1f3133',
-                            confirmButtonColor: '#b78c5a',
-                            confirmButtonText: 'OK',
-                            customClass: {
-                                popup: 'rounded-4'
-                            }
+                            ...swalConfig,
+                            title: 'Erro de conexão',
+                            text: 'Não foi possível conectar ao servidor.',
+                            icon: 'error'
                         });
+
                     }
                 });
+
             }
         });
 

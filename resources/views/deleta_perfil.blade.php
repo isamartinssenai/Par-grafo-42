@@ -29,7 +29,7 @@
     body {
       padding-top: 80px;
       font-family: 'Cormorant Garamond', 'Georgia', serif;
-      background-image: url('naice.png');
+      background-image: url('{{ asset("chat.png") }}');
       background-size: cover;
       background-attachment: fixed;
       color: #1e2b2c;

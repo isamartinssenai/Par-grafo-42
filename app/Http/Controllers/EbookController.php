@@ -48,7 +48,7 @@ class EbookController extends Controller
         $ebook->hash_conteudo = md5($request->texto);
         $ebook->save();
 
-        RenovaCache::dispatch($request->usuario); // ✅
+        RenovaCache::dispatch($request->usuario);
 
         return response()->json([
             'erro' => 'n',
@@ -78,7 +78,7 @@ class EbookController extends Controller
             $ebook->user_id = $user->id;
             $ebook->save();
 
-            RenovaCache::dispatch($user); // ✅
+            RenovaCache::dispatch($user);
 
             return response()->json([
                 'erro' => 'n',
@@ -113,6 +113,13 @@ class EbookController extends Controller
                 return response()->json(['erro' => 'E-book não encontrado'], 404);
             }
 
+            if ($ebook->user_id != $usuario->id) {
+                return response()->json([
+                    'erro' => 's',
+                    'msg' => 'Você não tem permissão para alterar esse e-book!'
+                ], 403);
+            }
+
             $ebook->titulo = $request->titulo;
             $ebook->autor = $request->autor;
             $ebook->genero = $request->genero;
@@ -120,7 +127,7 @@ class EbookController extends Controller
             $ebook->texto = $request->texto;
             $ebook->save();
 
-            RenovaCache::dispatch($usuario); // ✅
+            RenovaCache::dispatch($usuario);
 
             return response()->json([
                 'erro' => 'n',
@@ -136,16 +143,25 @@ class EbookController extends Controller
     }
 
     public function todos_ebook(Request $request)
-    {
-        $usuario = $request->usuario;
+{
+    try {
 
-        $ebooks = EbookModel::where('user_id', $usuario->id)->get(); // ✅ corrigido
+        $ebooks = Cache::remember('ebooks_all', 60 * 60 * 24, function () {
+            return EbookModel::all();
+        });
 
         return response()->json([
             'erro' => 'n',
-            'ebook' => $ebooks,
+            'ebooks' => $ebooks,
         ], 200);
+
+    } catch (\Throwable $th) {
+        return response()->json([
+            'erro' => 's',
+            'msg' => 'Erro ao listar e-books'
+        ], 500);
     }
+}
 
     public function visualiza_ebook($id_ebook)
     {
@@ -186,7 +202,7 @@ class EbookController extends Controller
 
         $ebook->delete();
 
-        RenovaCache::dispatch($usuario); // ✅
+        RenovaCache::dispatch($usuario);
 
         return response()->json([
             'erro' => 'n',
@@ -216,7 +232,7 @@ class EbookController extends Controller
             'livro_id' => $request->livro_id ?? $request->ebook_id
         ]);
 
-        RenovaCache::dispatch($user); // ✅ ESSENCIAL
+        RenovaCache::dispatch($user);
 
         return response()->json([
             'erro' => 'n',
