@@ -14,6 +14,7 @@
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
   <style>
+    
 
     /* SWEET ALERT PADRÃO PARÁGRAFO 42 */
 
@@ -593,7 +594,7 @@
                                 icon: 'success',
                                 background: 'linear-gradient(135deg, #f0e8de, #e7ddd1)',
                                 color: '#1f3133',
-                                confirmButtonText: 'Voltar ao início',
+                                confirmButtonText: 'Voltar aos e-books',
                                 confirmButtonColor: '#1f3133',
                                 timer: 3500,
                                 timerProgressBar: true,
@@ -602,7 +603,7 @@
                                     confirmButton: 'px-4 py-2'
                                 }
                             }).then(() => {
-                                window.location.href = '/home';
+                                window.location.href = '/prevendas';
                             });
 
                         } else {
@@ -623,7 +624,7 @@
                     error: function () {
                         Swal.fire({
                             title: 'Erro na requisição',
-                            text: 'Servidor não respondeu',
+                            text: 'Você não tem permissão para alterar esse e-book ou ocorreu um erro inesperado.',
                             icon: 'error',
                             background: '#fdf6f0',
                             color: '#1f3133',

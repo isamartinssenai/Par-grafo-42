@@ -16,6 +16,46 @@
   <script src="salva_cadastro.js" ></script>
 
   <style>
+    .meu-swal{
+    border-radius: 28px !important;
+    border: 2px solid #b78c5a !important;
+    box-shadow: 0 20px 45px rgba(31,49,51,0.35) !important;
+    padding: 2rem !important;
+}
+
+.meu-botao-swal{
+    background: linear-gradient(135deg, #1f3133, #2d4749) !important;
+    border: 2px solid #b78c5a !important;
+    border-radius: 40px !important;
+    padding: 0.9rem 2rem !important;
+    font-size: 1rem !important;
+    font-weight: 600 !important;
+    color: white !important;
+    transition: 0.3s !important;
+    box-shadow: 0 8px 20px rgba(31,49,51,0.25) !important;
+}
+
+.meu-botao-swal:hover{
+    transform: scale(1.04);
+    background: linear-gradient(135deg, #2a4245, #36585b) !important;
+}
+
+.meu-botao-swal-erro{
+    background: linear-gradient(135deg, #8b3a3a, #a54545) !important;
+    border: 2px solid #d8a46d !important;
+    border-radius: 40px !important;
+    padding: 0.9rem 2rem !important;
+    font-size: 1rem !important;
+    font-weight: 600 !important;
+    color: white !important;
+    transition: 0.3s !important;
+    box-shadow: 0 8px 20px rgba(139,58,58,0.25) !important;
+}
+
+.meu-botao-swal-erro:hover{
+    transform: scale(1.04);
+    background: linear-gradient(135deg, #a54545, #bb5a5a) !important;
+}
     * {
       margin: 0;
       padding: 0;
@@ -361,6 +401,63 @@
       border: 1px solid #b78c5a;
     }
 
+    .meu-swal{
+    width: 420px !important;
+    max-width: 90% !important;
+
+    border-radius: 24px !important;
+    border: 2px solid #b78c5a !important;
+
+    background: linear-gradient(135deg, #f8f2ea, #efe4d6) !important;
+
+    box-shadow: 0 18px 35px rgba(31,49,51,0.28) !important;
+
+    padding: 1.4rem !important;
+}
+
+/* ÍCONE */
+.swal2-icon{
+    zoom: 0.8;
+    margin-top: 0.5rem !important;
+    margin-bottom: 0.8rem !important;
+}
+
+/* TÍTULO */
+.swal2-title{
+    padding: 0 !important;
+    margin-bottom: 0.3rem !important;
+}
+
+/* TEXTO */
+.swal2-html-container{
+    margin: 0.5rem 0 !important;
+    padding: 0 !important;
+}
+
+/* BOTÕES */
+.swal2-actions{
+    margin-top: 1rem !important;
+    gap: 10px !important;
+}
+
+.meu-botao-swal,
+.meu-botao-swal-erro{
+
+    padding: 0.75rem 1.5rem !important;
+
+    font-size: 0.95rem !important;
+
+    border-radius: 40px !important;
+
+    min-width: 150px;
+}
+
+/* LOADING */
+.swal2-loader{
+    width: 2.2em !important;
+    height: 2.2em !important;
+}
+
     .footer {
       background: #1f3133;
       color: #ddd2c2;
@@ -391,86 +488,8 @@
   </style>
 </head>
 <body>
-<nav class="navbar fixed-top" style="background: linear-gradient(105deg, #1a2e30 0%, #1d3537 100%); border-bottom: 3px solid #b78c5a;">
-  <div class="container-fluid">
 
-    <!-- LOGO -->
-    <a class="navbar-brand d-flex align-items-center gap-2 text-white" href="#">
-      <div style="background:#b78c5a; width:40px; height:40px; border-radius:50%; display:flex; align-items:center; justify-content:center;">
-        <i class="fas fa-book-open" style="color:#1f3133;"></i>
-      </div>
-      <span style="font-weight:600;">Parágrafo <span style="color:#e6c9a8;">42</span></span>
-    </a>
-
-    <!-- BOTÃO -->
-    <button class="navbar-toggler text-white border-0" type="button" data-bs-toggle="offcanvas" data-bs-target="#menuLateral">
-      <i class="fas fa-bars"></i>
-    </button>
-
-    <!-- MENU LATERAL -->
-    <div class="offcanvas offcanvas-end text-bg-dark" tabindex="-1" id="menuLateral">
-      
-      <div class="offcanvas-header" style="border-bottom: 2px solid #b78c5a;">
-        <h5 class="offcanvas-title">Menu</h5>
-        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas"></button>
-      </div>
-
-      <div class="offcanvas-body">
-
-        <ul class="navbar-nav gap-2">
-
-          <li class="nav-item">
-            <a class="nav-link text-white" href="{{ url('/home') }}">
-              <i class="fas fa-home me-2"></i>Início
-            </a>
-          </li>
-
-
-          <li class="nav-item">
-            <a class="nav-link text-white" href="{{ url('/ebook') }}">
-              <i class="fas fa-book-medical me-2"></i>Cadastre seu e-book
-            </a>
-          </li>
-
-          <li class="nav-item">
-            <a class="nav-link text-white" href="{{ url('/autor') }}">
-              <i class="fas fa-feather me-2"></i>Cadastrar Autor
-            </a>
-          </li>
-
-          <li class="nav-item">
-            <a class="nav-link text-warning fw-bold" href="{{ url('/prevendas') }}">
-              <i class="fas fa-heart me-2"></i>Favoritar
-            </a>
-          </li>
-
-          <li class="nav-item">
-            <a class="nav-link text-white" href="{{ url('/dashboard') }}">
-              <i class="fas fa-chart-line me-2"></i>Dashboard
-            </a>
-          </li>
-
-          <li class="nav-item">
-            <a class="nav-link text-white" href="{{ url('/login') }}">
-              <i class="fas fa-clipboard-list me-2"></i>Login
-            </a>
-          </li>
-
-          <li class="nav-item">
-            <a class="nav-link text-white" href="{{ url('/perfil') }}">
-              <i class="fas fa-user-circle me-2"></i>Perfil
-            </a>
-          </li>
-
-        </ul>
-
-      </div>
-    </div>
-
-  </div>
-</nav>
-
-  <!-- CONTEÚDO PRINCIPAL - CADASTRO -->
+  //CONTEÚDO PRINCIPAL - CADASTRO
   <div class="login-container">
     <div class="login-card">
       <div class="login-header">
@@ -482,7 +501,7 @@
       </div>
 
       <form class="login-form" onsubmit="event.preventDefault(); alert('✅ Cadastro realizado com sucesso! (demo)');">
-        <!-- Nome completo -->
+        // Nome completo
         <div class="input-group">
           <label><i class="fas fa-user"></i> Nome completo</label>
           <div class="input-wrapper">
@@ -491,7 +510,7 @@
           </div>
         </div>
 
-        <!-- E-mail -->
+        // E-mail
         <div class="input-group">
           <label><i class="fas fa-envelope"></i> E-mail</label>
           <div class="input-wrapper">
@@ -500,7 +519,7 @@
           </div>
         </div>
 
-        <!-- Senha -->
+        // Senha
         <div class="input-group">
           <label><i class="fas fa-lock"></i> Senha</label>
           <div class="input-wrapper">
@@ -512,7 +531,7 @@
           </div>
         </div>
 
-        <!-- Telefone -->
+        // Telefone
         <div class="input-group">
           <label><i class="fas fa-phone"></i> Telefone</label>
           <div class="input-wrapper">
@@ -521,7 +540,7 @@
           </div>
         </div>
 
-        <!-- Data de nascimento -->
+        //Data de nascimento
         <div class="input-group">
           <label><i class="fas fa-calendar-alt"></i> Data de nascimento</label>
           <div class="input-wrapper">
@@ -577,21 +596,379 @@
     </div>
   </footer>
 
-  <script>
-    function togglePassword() {
-      const passwordInput = document.getElementById('password');
-      const toggleIcon = document.getElementById('toggleIcon');
-      
-      if (passwordInput.type === 'password') {
+<script>
+
+function togglePassword() {
+
+    const passwordInput = document.getElementById('senha');
+    const toggleIcon = document.getElementById('toggleIcon');
+
+    if (passwordInput.type === 'password') {
+
         passwordInput.type = 'text';
+
         toggleIcon.classList.remove('fa-eye');
         toggleIcon.classList.add('fa-eye-slash');
-      } else {
+
+    } else {
+
         passwordInput.type = 'password';
+
         toggleIcon.classList.remove('fa-eye-slash');
         toggleIcon.classList.add('fa-eye');
-      }
+
     }
-  </script>
+
+}
+
+$(document).ready(function(){
+
+    const SwalParagrafo = Swal.mixin({
+
+        background: 'linear-gradient(135deg, #f8f2ea, #efe4d6)',
+
+        color: '#1f3133',
+
+        backdrop: 'rgba(15,20,20,0.75)',
+
+        customClass: {
+
+            popup: 'meu-swal',
+            confirmButton: 'meu-botao-swal',
+            cancelButton: 'meu-botao-swal-erro'
+
+        },
+
+        buttonsStyling: false
+
+    });
+
+    $("#meuid").click(function(e){
+
+        e.preventDefault();
+
+        SwalParagrafo.fire({
+
+            title: `
+                <div style="
+                    font-family:'Cormorant Garamond', serif;
+                    font-size:2.7rem;
+                    font-weight:700;
+                    color:#1f3133;
+                    margin-bottom:5px;
+                ">
+                    Criar conta?
+                </div>
+            `,
+
+            html: `
+                <div style="
+                    font-family:'Cormorant Garamond', serif;
+                    font-size:1.25rem;
+                    color:#5f7375;
+                    line-height:1.7;
+                ">
+                    Você está prestes a entrar no
+                    <br>
+
+                    <span style="
+                        color:#b78c5a;
+                        font-size:1.35rem;
+                        font-weight:700;
+                    ">
+                        Parágrafo 42 ✨
+                    </span>
+
+                    <br><br>
+
+                    Deseja continuar com o cadastro?
+                </div>
+            `,
+
+            icon: 'question',
+
+            showCancelButton: true,
+
+            confirmButtonText: `
+                <i class="fas fa-feather"></i>
+                Criar conta
+            `,
+
+            cancelButtonText: `
+                <i class="fas fa-xmark"></i>
+                Cancelar
+            `,
+
+            reverseButtons: true
+
+        }).then((result) => {
+
+            if(result.isConfirmed){
+
+                $.ajax({
+
+                    url: "/api/cadastro_usuario",
+                    method: "POST",
+
+                    data: {
+
+                        nome: $("#nome").val(),
+                        email: $("#email").val(),
+                        senha: $("#senha").val(),
+                        telefone: $("#telefone").val(),
+                        nascimento: $("#nascimento").val(),
+                        genero: $("#genero").val()
+
+                    },
+
+                    beforeSend: function(){
+
+                        SwalParagrafo.fire({
+
+                            title: `
+                                <div style="
+                                    font-family:'Cormorant Garamond', serif;
+                                    font-size:2.5rem;
+                                    font-weight:700;
+                                    color:#1f3133;
+                                ">
+                                    Criando conta...
+                                </div>
+                            `,
+
+                            html: `
+                                <div style="
+                                    font-family:'Cormorant Garamond', serif;
+                                    color:#5f7375;
+                                    font-size:1.2rem;
+                                    margin-top:12px;
+                                    line-height:1.8;
+                                ">
+                                    Organizando seus capítulos 📚
+                                    
+                                    <br>
+
+                                    <span style="
+                                        color:#b78c5a;
+                                        font-weight:700;
+                                        font-size:1.05rem;
+                                    ">
+                                        Aguarde um instante...
+                                    </span>
+                                </div>
+                            `,
+
+                            allowOutsideClick: false,
+                            showConfirmButton: false,
+
+                            didOpen: () => {
+
+                                Swal.showLoading();
+
+                            }
+
+                        });
+
+                    },
+
+                    success: function(res){
+
+                        console.log(res);
+
+                        if(res['erro'] == 'n'){
+
+                            SwalParagrafo.fire({
+
+                                icon: 'success',
+
+                                title: `
+                                    <div style="
+                                        font-family:'Cormorant Garamond', serif;
+                                        font-size:2.9rem;
+                                        font-weight:700;
+                                        color:#1f3133;
+                                    ">
+                                        Bem-vindo!
+                                    </div>
+                                `,
+
+                                html: `
+                                    <div style="
+                                        font-family:'Cormorant Garamond', serif;
+                                        color:#4f6567;
+                                        font-size:1.25rem;
+                                        margin-top:15px;
+                                        line-height:1.8;
+                                    ">
+                                        Sua conta foi criada com sucesso ✨
+
+                                        <br><br>
+
+                                        <div style="
+                                            background:#fff8ef;
+                                            border:2px solid #d8c2a2;
+                                            border-radius:20px;
+                                            padding:15px;
+                                            color:#1f3133;
+                                            font-size:1.1rem;
+                                            box-shadow:0 8px 18px rgba(0,0,0,0.08);
+                                        ">
+                                            <i class="fas fa-book-open" style="color:#b78c5a;"></i>
+
+                                            Agora você já pode publicar
+                                            seus e-books e compartilhar
+                                            suas histórias 📖
+                                        </div>
+
+                                    </div>
+                                `,
+
+                                confirmButtonText: `
+                                    <i class="fas fa-arrow-right"></i>
+                                    Ir para login
+                                `,
+
+                                timer: 5000,
+                                timerProgressBar: true,
+
+                                showClass: {
+
+                                    popup: `
+                                        animate__animated
+                                        animate__zoomIn
+                                        animate__faster
+                                    `
+
+                                },
+
+                                hideClass: {
+
+                                    popup: `
+                                        animate__animated
+                                        animate__fadeOutDown
+                                        animate__faster
+                                    `
+
+                                }
+
+                            }).then(() => {
+
+                                window.location.href = "/login";
+
+                            });
+
+                        } else {
+
+                            SwalParagrafo.fire({
+
+                                icon: 'error',
+
+                                title: `
+                                    <div style="
+                                        font-family:'Cormorant Garamond', serif;
+                                        font-size:2.5rem;
+                                        font-weight:700;
+                                        color:#8b3a3a;
+                                    ">
+                                        Ops...
+                                    </div>
+                                `,
+
+                                html: `
+                                    <div style="
+                                        font-family:'Cormorant Garamond', serif;
+                                        color:#5f7375;
+                                        font-size:1.2rem;
+                                        line-height:1.8;
+                                    ">
+                                        ${res['msg']}
+
+                                        <br><br>
+
+                                        <span style="
+                                            color:#b78c5a;
+                                            font-weight:700;
+                                        ">
+                                            Verifique os dados e tente novamente.
+                                        </span>
+                                    </div>
+                                `,
+
+                                confirmButtonText: `
+                                    <i class="fas fa-rotate-right"></i>
+                                    Tentar novamente
+                                `
+
+                            });
+
+                        }
+
+                    },
+
+                    error: function(xhr){
+
+                        console.log(xhr.responseText);
+
+                        SwalParagrafo.fire({
+
+                            icon: 'error',
+
+                            title: `
+                                <div style="
+                                    font-family:'Cormorant Garamond', serif;
+                                    font-size:2.5rem;
+                                    font-weight:700;
+                                    color:#8b3a3a;
+                                ">
+                                    Erro no servidor
+                                </div>
+                            `,
+
+                            html: `
+                                <div style="
+                                    font-family:'Cormorant Garamond', serif;
+                                    color:#5f7375;
+                                    font-size:1.2rem;
+                                    line-height:1.8;
+                                ">
+                                    Não foi possível conectar ao servidor.
+
+                                    <br><br>
+
+                                    <div style="
+                                        background:#fff8ef;
+                                        border:2px solid #d8c2a2;
+                                        border-radius:18px;
+                                        padding:14px;
+                                        color:#1f3133;
+                                    ">
+                                        <i class="fas fa-wifi"></i>
+
+                                        Verifique sua conexão
+                                        e tente novamente.
+                                    </div>
+                                </div>
+                            `,
+
+                            confirmButtonText: `
+                                <i class="fas fa-xmark"></i>
+                                Fechar
+                            `
+
+                        });
+
+                    }
+
+                });
+
+            }
+
+        });
+
+    });
+
+});
+
+</script>
 </body>
 </html>

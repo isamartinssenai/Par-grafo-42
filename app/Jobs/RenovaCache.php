@@ -21,45 +21,41 @@ class RenovaCache
     }
 
     public function handle(): void
-    {
-        $user_id = $this->user_id;
+{
+    $user_id = $this->user_id;
 
-        Cache::forget('dashboard_'.$user_id);
+    // DASHBOARD
+    Cache::forget('dashboard_'.$user_id);
 
-        Cache::remember('dashboard_'.$user_id, 60 * 5, function () use ($user_id) {
+    Cache::remember('dashboard_'.$user_id, 60 * 5, function () use ($user_id) {
 
-            $data = [];
+        $data = [];
 
-            $data['totalEbook'] = EbookModel::where('user_id', $user_id)->count();
-            $data['favoritos'] = Favorito::where('user_id', $user_id)->count();
+        $data['totalEbook'] = EbookModel::where('user_id', $user_id)->count();
+        $data['favoritos'] = Favorito::where('user_id', $user_id)->count();
 
-            $ebooksPorMes = EbookModel::where('user_id', $user_id)
-                ->select(DB::raw('MONTH(created_at) as mes'), DB::raw('count(*) as total'))
-                ->groupBy('mes')
-                ->pluck('total', 'mes');
+        $ebooksPorMes = EbookModel::where('user_id', $user_id)
+            ->select(DB::raw('MONTH(created_at) as mes'), DB::raw('count(*) as total'))
+            ->groupBy('mes')
+            ->pluck('total', 'mes');
 
-            $grafico = array_fill(0, 12, 0);
+        $grafico = array_fill(0, 12, 0);
 
-            foreach ($ebooksPorMes as $mes => $total) {
-                $grafico[$mes - 1] = $total;
-            }
+        foreach ($ebooksPorMes as $mes => $total) {
+            $grafico[$mes - 1] = $total;
+        }
 
-            $data['grafico'] = $grafico;
-            $data['ebooksPorMes'] = $ebooksPorMes->toArray();
+        $data['grafico'] = $grafico;
+        $data['ebooksPorMes'] = $ebooksPorMes->toArray();
 
-            return $data;
-        });
+        return $data;
+    });
 
-        Cache::forget('ebooks_user_'.$user_id);
+    // TODOS OS EBOOKS
+    Cache::forget('todos_ebooks');
 
-        Cache::remember('ebooks_user_'.$user_id, 60 * 5, function () use ($user_id) {
-            return EbookModel::where('user_id', $user_id)->get()->toArray();
-        });
-
-        Cache::forget('todos_ebooks');
-
-        Cache::remember('todos_ebooks', now()->addMinutes(10), function () {
-            return EbookModel::all();
-        });
-    }
+    Cache::rememberForever('todos_ebooks', function () {
+        return EbookModel::all();
+    });
+}
 }

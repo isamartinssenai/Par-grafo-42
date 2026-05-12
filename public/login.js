@@ -26,7 +26,13 @@ $(document).ready(function(){
                     
                 }else{
 
-                    }
+                    if (response['msg'] == 'autentica_ativa')
+                        alert("Autenticação de dois fatores ativa, por favor digite o código enviado para seu email")
+                    setTimeout(function (){
+                        window.location.href = "digita_codigo";
+                    },2000);
+                }
+            
                 },
 
             error: function (xhr) {

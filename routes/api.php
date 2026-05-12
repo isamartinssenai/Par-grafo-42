@@ -10,6 +10,8 @@ use App\Http\Middleware\auth_api;
      
 Route::get('/exibe_livro/{id}',[LivroController::class,'exibe_livro']);
 
+Route::get('/enviar_codigo',[UsuarioController::class, 'enviar_codigo']);
+
 Route::post('/cadastro_usuario',[UsuarioController::class,'cadastra_usuario']);
 Route::post('/login_novo',[UsuarioController::class,'login']);
 Route::put('/altera_cadastro',[UsuarioController::class,'altera_cadastro']);

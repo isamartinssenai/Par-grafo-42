@@ -469,9 +469,6 @@
 <script>
   $(document).ready(function(){
 
-    /* =========================
-       CONFIG GLOBAL SWEET ALERT
-    ========================= */
     const swalConfig = {
       customClass: {
         popup: 'custom-swal',
@@ -485,9 +482,6 @@
 
         let titulo = $("#titulo").val();
 
-        /* =========================
-           CONFIRMAÇÃO
-        ========================= */
         Swal.fire({
             ...swalConfig,
             title: '⚠️ Tem certeza?',
@@ -507,9 +501,6 @@
 
             if (result.isConfirmed) {
 
-                /* =========================
-                   LOADING BONITO
-                ========================= */
                 Swal.fire({
                     ...swalConfig,
                     title: 'Deletando...',
@@ -536,9 +527,6 @@
 
                         if(res['erro'] == 'n'){
 
-                            /* =========================
-                               SUCESSO
-                            ========================= */
                             Swal.fire({
                                 ...swalConfig,
                                 title: '✅ E-book deletado!',
@@ -552,14 +540,11 @@
                                 timer: 2500,
                                 showConfirmButton: false
                             }).then(() => {
-                                window.location.href = '/home';
+                                window.location.href = '/prevendas';
                             });
 
                         } else {
 
-                            /* =========================
-                               ERRO BACKEND
-                            ========================= */
                             Swal.fire({
                                 ...swalConfig,
                                 title: 'Erro ao deletar',
@@ -572,9 +557,6 @@
 
                     error: function () {
 
-                        /* =========================
-                           ERRO SERVIDOR
-                        ========================= */
                         Swal.fire({
                             ...swalConfig,
                             title: 'Erro de conexão',

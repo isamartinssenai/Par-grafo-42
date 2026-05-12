@@ -11,6 +11,10 @@ Route::get('/', function () {
     return ['Laravel' => app()->version()];
 });
 
+Route::get('/digita_codigo', function(){
+    return view('digita_codigo');
+})->name('digita_codigo');
+
 
 Route::get('/inicio', function () {
     return view('inicio');

@@ -2,72 +2,45 @@
 
 namespace App\Jobs;
 
-use Illuminate\Contracts\Queue\ShouldQueue;
-use Illuminate\Foundation\Queue\Queueable;
+use App\Models\Usuario;
 use Illuminate\Support\Facades\Cache;
-use App\Models\EbookModel;
-use App\Models\Favorito;
-use Illuminate\Support\Facades\DB;
 
-class RenovaCache implements ShouldQueue
+class UsuarioController extends Controller
 {
-    use Queueable;
-
-    protected $user_id;
-
-    public function __construct($user)
+    public function perfil(Request $request)
     {
-        $this->user_id = $user->id;
+        $usuario = Usuario::find($request->user()->id);
+
+        return view('perfil')->with('cadastro', $usuario);
     }
 
-    public function handle(): void
+    public function testa_email($id_usuario)
     {
-        $user_id = $this->user_id;
+        $usuario = Usuario::find($id_usuario);
 
-        // =========================
-        // DASHBOARD (FOREVER)
-        // =========================
-        Cache::forget('dashboard_'.$user_id);
+        EnviarEmail::dispatch($usuario);
 
-        Cache::rememberForever('dashboard_'.$user_id, function () use ($user_id) {
+        $data =
+        [
+            'messagem' => 'Email enviado',
+            'usuario' => $usuario,
+        ];
 
-            $data = [];
+        return response()->json($data);
+    }
 
-            $data['totalEbook'] = EbookModel::where('user_id', $user_id)->count();
-            $data['favoritos'] = Favorito::where('user_id', $user_id)->count();
-
-            $ebooksPorMes = EbookModel::where('user_id', $user_id)
-                ->select(DB::raw('MONTH(created_at) as mes'), DB::raw('count(*) as total'))
-                ->groupBy('mes')
-                ->pluck('total', 'mes');
-
-            $grafico = array_fill(0, 12, 0);
-
-            foreach ($ebooksPorMes as $mes => $total) {
-                $grafico[$mes - 1] = $total;
-            }
-
-            $data['grafico'] = $grafico;
-
-            return $data;
+    public function todos_users(Request $request)
+    {
+        $usuarios = Cache::remember('todos_usuarios', $ttl, function () {
+            return Usuario::all();
         });
 
-        // =========================
-        // EBOOKS DO USUÁRIO (FOREVER)
-        // =========================
-        Cache::forget('ebooks_user_'.$user_id);
+        $data = [
+            'erro' => 'n',
+            'usuarios' => $usuarios,
+        ];
 
-        Cache::rememberForever('ebooks_user_'.$user_id, function () use ($user_id) {
-            return EbookModel::where('user_id', $user_id)->get();
-        });
+        return response()->json($data, 200);
 
-        // =========================
-        // TODOS OS EBOOKS (10 min)
-        // =========================
-        Cache::forget('todos_ebooks');
-
-        Cache::remember('todos_ebooks', now()->addMinutes(10), function () {
-            return EbookModel::all();
-        });
     }
 }

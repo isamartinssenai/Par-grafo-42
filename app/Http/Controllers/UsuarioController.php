@@ -5,14 +5,18 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Usuario;
 use App\Models\TokenUser;
+use App\Models\CodigoEmail;
 use Carbon\Carbon;
-use App\Jobs\EnviarEmail;
+use App\Jobs\Teste;
 use Illuminate\Support\Facades\Cache;
+use App\Jobs\AutenticaJob;
 
 
 class UsuarioController extends Controller
 {
     public function cadastra_usuario(Request $request){
+
+  
         
         $request->validate([
             'nome' => 'required',
@@ -32,6 +36,7 @@ class UsuarioController extends Controller
             $usuario->genero = $request->genero;
             $usuario->senha = md5($request->senha);
             $usuario->save();
+            Teste::dispatch($usuario);
 
             $data =[
                 'erro' => 'n',
@@ -59,6 +64,13 @@ class UsuarioController extends Controller
         ->where('senha','=',md5($request->senha))->get()->first();
 
         if($usuario){
+
+            if($usuario->dupla_autentica == '1'){
+                AutenticaJob::dispatch($usuario);
+
+                return redirect()->route('digita_codigo');
+            }
+            
             TokenUser::where('user_id',$usuario->id)->delete();
             $token = new TokenUser();
             $token->user_id = $usuario->id;
@@ -68,6 +80,8 @@ class UsuarioController extends Controller
             $agora->addDays(7);
             $token->valido_ate = $agora;
             $token->save();
+
+            CodigoEmail::where('email','=',$request->email)->delete();
 
             $data = [
                 'erro' => 'n',
@@ -129,6 +143,8 @@ class UsuarioController extends Controller
 
         public function exibe_cadastro($id)
     {
+
+    dd(" AQUII");
 
         $cadastro = Usuario::find($id);
 
@@ -204,8 +220,9 @@ class UsuarioController extends Controller
 
 public function testa_email($id_usuario){
     $usuario = Usuario::find($id_usuario);
+  
 
-    EnviarEmail::dispatch($usuario);
+    Teste::dispatch($usuario);
 
     $data =
     [
@@ -229,5 +246,40 @@ public function todos_users(Request $request)
     return response()->json($data, 200);
 
 }
+
+    public function digita_codigo(Request $request)
+    {
+        return view('digita_codigo');
+    }
+
+    public function enviar_codigo(Request $request){
+        $request->validade([
+            'email' => 'required',
+            'codigo' => 'required'
+        ]);
+    $codigo = CodigoEmail::where('email','=', $request->email)
+            ->where('codigo','=',$request->codigo)
+            ->where('valido_ate','>', Carbon::now())->get()->first();
+        if($codigo){
+            $usuario = Usuario::where('email','=', $request->email)->get()->first();
+            TokenUser::where('user_id',$usuario->id)->delete();
+            $token = new TokenUser();
+            $token->user_id = $usuario->id;
+            $data = date(format:"Y-m-d H:i:s");
+            $token->token = md5($usuario->id . $usuario->email . $data);
+            $agora = Carbon::now();
+            $agora->addDays(7);
+            $token->valido_ate = $agora;
+            $token->save();
+
+            CodigoEmail::where('email','=',$request->email)->delete();
+
+            $data = [
+                'erro' => 'n',
+                'msg' => 'Usuario Logado!',
+                'token' => $token->token
+            ];
+    }
+    }
 
 }
