@@ -1,5 +1,6 @@
 $(document).ready(function() {
 
+    alert("MUDEI");
     $('#enviar_codigo').click(function() {
 
         console.log("Enviando código para o servidor...");
