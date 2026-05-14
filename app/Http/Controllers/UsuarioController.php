@@ -253,10 +253,11 @@ public function todos_users(Request $request)
     }
 
     public function enviar_codigo(Request $request){
-        $request->validade([
+        $request->validate([
             'email' => 'required',
             'codigo' => 'required'
         ]);
+      
     $codigo = CodigoEmail::where('email','=', $request->email)
             ->where('codigo','=',$request->codigo)
             ->where('valido_ate','>', Carbon::now())->get()->first();
@@ -279,6 +280,13 @@ public function todos_users(Request $request)
                 'msg' => 'Usuario Logado!',
                 'token' => $token->token
             ];
+            return response()->json($data,200);
+        }else{
+            $data = [
+                'erro' => 's',     
+                'msg' => 'Codigo Invalido!',
+            ];
+            return response()->json($data,200);
     }
     }
 

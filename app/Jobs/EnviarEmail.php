@@ -2,45 +2,26 @@
 
 namespace App\Jobs;
 
+use Illuminate\Contracts\Queue\ShouldQueue;
+use Illuminate\Foundation\Queue\Queueable;
+use Illuminate\Queue\SerializesModels;
+use Illuminate\Support\Facades\Mail;
 use App\Models\Usuario;
-use Illuminate\Support\Facades\Cache;
+use App\Mail\BemVindoMail;
 
-class UsuarioController extends Controller
+
+class EnviarEmail implements ShouldQueue
 {
-    public function perfil(Request $request)
-    {
-        $usuario = Usuario::find($request->user()->id);
+    use Queueable;
+    public $usuario;
 
-        return view('perfil')->with('cadastro', $usuario);
+    public function __construct(Usuario $usuario)
+    {
+        $this->usuario = $usuario;
     }
 
-    public function testa_email($id_usuario)
+    public function handle(): void
     {
-        $usuario = Usuario::find($id_usuario);
-
-        EnviarEmail::dispatch($usuario);
-
-        $data =
-        [
-            'messagem' => 'Email enviado',
-            'usuario' => $usuario,
-        ];
-
-        return response()->json($data);
-    }
-
-    public function todos_users(Request $request)
-    {
-        $usuarios = Cache::remember('todos_usuarios', $ttl, function () {
-            return Usuario::all();
-        });
-
-        $data = [
-            'erro' => 'n',
-            'usuarios' => $usuarios,
-        ];
-
-        return response()->json($data, 200);
-
+        Mail::to($this->usuario->email)->send(new BemVindoMail($this->usuario));
     }
 }

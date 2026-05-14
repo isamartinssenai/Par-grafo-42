@@ -489,7 +489,6 @@
 </head>
 <body>
 
-  //CONTEÚDO PRINCIPAL - CADASTRO
   <div class="login-container">
     <div class="login-card">
       <div class="login-header">
@@ -501,7 +500,6 @@
       </div>
 
       <form class="login-form" onsubmit="event.preventDefault(); alert('✅ Cadastro realizado com sucesso! (demo)');">
-        // Nome completo
         <div class="input-group">
           <label><i class="fas fa-user"></i> Nome completo</label>
           <div class="input-wrapper">
@@ -510,7 +508,6 @@
           </div>
         </div>
 
-        // E-mail
         <div class="input-group">
           <label><i class="fas fa-envelope"></i> E-mail</label>
           <div class="input-wrapper">
@@ -519,7 +516,6 @@
           </div>
         </div>
 
-        // Senha
         <div class="input-group">
           <label><i class="fas fa-lock"></i> Senha</label>
           <div class="input-wrapper">
@@ -531,7 +527,6 @@
           </div>
         </div>
 
-        // Telefone
         <div class="input-group">
           <label><i class="fas fa-phone"></i> Telefone</label>
           <div class="input-wrapper">
@@ -540,7 +535,6 @@
           </div>
         </div>
 
-        //Data de nascimento
         <div class="input-group">
           <label><i class="fas fa-calendar-alt"></i> Data de nascimento</label>
           <div class="input-wrapper">
@@ -549,7 +543,6 @@
           </div>
         </div>
 
-        <!-- Gênero -->
         <div class="input-group">
           <label><i class="fas fa-venus-mars"></i> Gênero</label>
           <div class="input-wrapper">
